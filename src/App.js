@@ -1,17 +1,16 @@
-import React, { Component } from "react";
-import { Navbar, NavbarBrand } from "reactstrap";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import "./App.css";
 import Main from "./components/MainComponent";
-import Menu from "./components/MenuComponent";
-import { DISHES } from "./shared/dishes";
 
-class App extends Component {
-  render() {
-    return (
-      <div>
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="App">
         <Main />
       </div>
-    );
-  }
+    </BrowserRouter>
+  );
 }
 
 export default App;
