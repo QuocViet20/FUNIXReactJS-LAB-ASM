@@ -4,7 +4,7 @@ function Footer(props) {
   return (
     <div className="footer bg-info">
       <div className="row justify-content-center ">
-        <div className="col-7 col-sm-3 mt-2  ">
+        <div className="col-7 col-sm-3 col-lg-3 mt-2  ">
           <h5>Our Address</h5>
           <address>
             121, Clear Water Bay Road
@@ -21,7 +21,7 @@ function Footer(props) {
             <a href="mailto:confusion@food.net">confusion@food.net</a>
           </address>
         </div>
-        <div className="col-12 col-sm-3 align-self-center mt-3">
+        <div className="col-12 col-sm-3 col-md-6 col-lg-4  align-self-center mt-3">
           <div className="text-center ">
             <a
               className="mx-1 btn btn-social-icon btn-google"
