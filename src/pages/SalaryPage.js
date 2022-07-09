@@ -11,9 +11,81 @@ import { Link } from "react-router-dom";
 const Salary = ({ staffs }) => {
   const [sortStaffs, setSortStaffs] = useState([...staffs]);
   const [selectSort, setSelectSort] = useState("1");
+
+  // const handleBlur = () => {
+  //   if (selectSort === "1") {
+  //     const tempt = sortStaffs.sort((a, b) =>
+  //       a.id > b.id ? 1 : a.id < b.id ? -1 : 1
+  //     );
+  //     setSortStaffs(tempt);
+  //   }
+  //   if (selectSort === "2") {
+  //     const tempt = sortStaffs.sort((a, b) =>
+  //       a.salaryScale > b.salaryScale
+  //         ? 1
+  //         : a.salaryScale < b.salaryScale
+  //         ? -1
+  //         : 1
+  //     );
+  //     setSortStaffs(tempt);
+  //   }
+  //   if (selectSort === "3") {
+  //     const tempt = sortStaffs.sort((a, b) =>
+  //       a.overTime > b.overTime ? 1 : a.overTime < b.overTime ? -1 : 0
+  //     );
+  //     setSortStaffs(tempt);
+  //   }
+  //   if (selectSort === "4") {
+  //     const tempt = sortStaffs.sort((a, b) =>
+  //       a.salaryScale * 300000 + a.overTime * 200000 >
+  //       b.salaryScale * 300000 + b.overTime * 200000
+  //         ? 1
+  //         : a.salaryScale * 300000 + a.overTime * 200000 <
+  //           b.salaryScale * 300000 + b.overTime * 200000
+  //         ? -1
+  //         : 1
+  //     );
+  //     setSortStaffs(tempt);
+  //   }
+  // };
+
   const handleChange = (e) => {
+    console.log(e.target.value);
     setSelectSort(e.target.value);
-    if (selectSort === 1) {
+
+    if (selectSort === "1") {
+      const tempt = sortStaffs.sort((a, b) =>
+        a.id > b.id ? 1 : a.id < b.id ? -1 : 1
+      );
+      setSortStaffs(tempt);
+    }
+    if (selectSort === "2") {
+      const tempt = sortStaffs.sort((a, b) =>
+        a.salaryScale > b.salaryScale
+          ? 1
+          : a.salaryScale < b.salaryScale
+          ? -1
+          : 1
+      );
+      setSortStaffs(tempt);
+    }
+    if (selectSort === "3") {
+      const tempt = sortStaffs.sort((a, b) =>
+        a.overTime > b.overTime ? 1 : a.overTime < b.overTime ? -1 : 0
+      );
+      setSortStaffs(tempt);
+    }
+    if (selectSort === "4") {
+      const tempt = sortStaffs.sort((a, b) =>
+        a.salaryScale * 300000 + a.overTime * 200000 >
+        b.salaryScale * 300000 + b.overTime * 200000
+          ? 1
+          : a.salaryScale * 300000 + a.overTime * 200000 <
+            b.salaryScale * 300000 + b.overTime * 200000
+          ? -1
+          : 1
+      );
+      setSortStaffs(tempt);
     }
   };
   return (
@@ -41,6 +113,7 @@ const Salary = ({ staffs }) => {
                 class="form-select form-select-lg mb-3"
                 aria-label=".form-select-lg example"
                 onChange={handleChange}
+                // onBlur={handleBlur}
                 value={selectSort}
               >
                 <option value="1" selected>
@@ -48,13 +121,13 @@ const Salary = ({ staffs }) => {
                 </option>
                 <option value="2">theo hệ số lương</option>
                 <option value="3">theo số ngày làm thêm</option>
-                <option value="3">theo lương</option>
+                <option value="4">theo lương</option>
               </select>
             </div>
           </div>
         </div>
-        {staffs.length > 0 &&
-          staffs.map((item) => (
+        {sortStaffs.length > 0 &&
+          sortStaffs.map((item) => (
             <div className="col-12 col-sm-6 col-lg-4 p-2">
               <Card key={item.id} className="px-4 pt-2">
                 <h3>{item.name}</h3>
