@@ -12,11 +12,11 @@ import { Link } from "react-router-dom";
 function RenderStaff({ staff }) {
   return (
     <Card>
-      {/* <Link to={`staff/${staff.id}`}> */}
-      <CardBody>
-        <CardImg width="100%" src={staff.image} alt={staff.name} />
-      </CardBody>
-      {/* </Link> */}
+      <Link to={`/staff/${staff.id}`}>
+        <CardBody>
+          <CardImg width="100%" src={staff.image} alt={staff.name} />
+        </CardBody>
+      </Link>
       <div>
         <CardTitle className="text-center text-dark ">{staff.name}</CardTitle>
       </div>

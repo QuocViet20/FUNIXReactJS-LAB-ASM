@@ -14,6 +14,7 @@ const Main = () => {
   const [departmentName, setDepartmentName] = useState("");
 
   const StaffWithId = ({ match }) => {
+    console.log(match);
     return (
       <StaffDetail
         staff={
@@ -51,6 +52,11 @@ const Main = () => {
         />
         <Route path="/staff/:staffId" component={StaffWithId} />
         <Route path="/department/:departmentId" component={DepartmentFilter} />
+        <Route
+          exact
+          path="/department/staff/:staffId"
+          component={StaffWithId}
+        />
         <Redirect to="/home" />
       </Switch>
       <Footer />
