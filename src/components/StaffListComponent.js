@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import dateFormat, { masks } from "dateformat";
-import { Card, CardTitle } from "reactstrap";
+import { Card, CardTitle, CardText } from "reactstrap";
 
 class StaffList extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class StaffList extends Component {
     else
       return (
         <div>
-          <CardText tag="h5">Bấm vào tên nhân viên để xem thông tin</CardText>
+          <CardTitle tag="h5">Bấm vào tên nhân viên để xem thông tin</CardTitle>
         </div>
       );
   }
