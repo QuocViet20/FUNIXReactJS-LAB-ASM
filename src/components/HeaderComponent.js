@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <React.Fragment>
       <Navbar dark expand="md">
-        <div className="container">
+        <div className="container ">
           <NavbarToggler onClick={() => setNavOpen(!navOpen)} />
           <NavbarBrand className="mr-auto" href="/">
             <img

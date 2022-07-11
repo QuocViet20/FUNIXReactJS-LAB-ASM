@@ -20,9 +20,7 @@ const Main = () => {
   const [dishId, setDishId] = useState(null);
 
   console.log(dishes);
-  const onDishSelect = (dishId) => {
-    setDishId(dishId);
-  };
+
   const HomePage = () => {
     return (
       <Home
