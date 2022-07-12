@@ -43,7 +43,7 @@ const Main = () => {
     <div>
       <Header />
       <Switch>
-        <Route path="/home" component={() => <Home staffs={staffs} />} />
+        <Route path="/home" component={() => <Home listStaffs={staffs} />} />
         <Route exact path="/department" component={Department} />
         <Route
           exact
