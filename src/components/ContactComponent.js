@@ -36,36 +36,56 @@ function Contact(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setContact({ ...contact, [name]: value });
-    validate();
   };
 
   const handleBlur = (e) => {
-    validate();
+    const errors = {
+      firstname: "",
+      lastname: "",
+      telnum: "",
+      email: "",
+    };
 
-    console.log(errors);
-  };
-
-  const validate = () => {
-    let validateErrors = errors;
     const reg = /^\d+$/;
     if (contact.firstname && contact.firstname.length < 3)
-      validateErrors.firstname = "First Name should be >= 3 characters";
+      errors.firstname = "First Name should be >= 3 characters";
     if (contact.firstname && contact.firstname.length > 10)
-      validateErrors.firstname = "First Name should be <= 10 characters";
+      errors.firstname = "First Name should be <= 10 characters";
     if (contact.lastname && contact.lastname.length < 3)
-      validateErrors.lastname = "Last Name should be >= 3 characters";
+      errors.lastname = "Last Name should be >= 3 characters";
     if (contact.lastname && contact.lastname.length > 10)
-      validateErrors.lastname = "Last Name should be <= 10 characters";
+      errors.lastname = "Last Name should be <= 10 characters";
     if (contact.telnum && !reg.test(contact.telnum))
-      validateErrors.telnum = "Tel. Number should contain only numbers";
+      errors.telnum = "Tel. Number should contain only numbers";
     if (
       contact.email &&
       contact.email.split("").filter((x) => x === "@").length !== 1
     )
-      validateErrors.email = "Email should contain a @";
+      errors.email = "Email should contain a @";
 
-    return setErrors(validateErrors);
+    setErrors(errors);
   };
+
+  // const validate = () => {
+  //   const reg = /^\d+$/;
+  //   if (contact.firstname && contact.firstname.length < 3)
+  //     validateErrors.firstname = "First Name should be >= 3 characters";
+  //   if (contact.firstname && contact.firstname.length > 10)
+  //     validateErrors.firstname = "First Name should be <= 10 characters";
+  //   if (contact.lastname && contact.lastname.length < 3)
+  //     validateErrors.lastname = "Last Name should be >= 3 characters";
+  //   if (contact.lastname && contact.lastname.length > 10)
+  //     validateErrors.lastname = "Last Name should be <= 10 characters";
+  //   if (contact.telnum && !reg.test(contact.telnum))
+  //     validateErrors.telnum = "Tel. Number should contain only numbers";
+  //   if (
+  //     contact.email &&
+  //     contact.email.split("").filter((x) => x === "@").length !== 1
+  //   )
+  //     validateErrors.email = "Email should contain a @";
+
+  //   return setErrors(validateErrors);
+  // };
 
   return (
     <div className="container">

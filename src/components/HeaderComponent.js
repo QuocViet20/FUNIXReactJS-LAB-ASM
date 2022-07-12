@@ -1,17 +1,43 @@
 import React, { useState } from "react";
 import {
-  Nav,
   Navbar,
   NavbarBrand,
+  Nav,
   NavbarToggler,
   Collapse,
   NavItem,
   Jumbotron,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Input,
+  Label,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [navOpen, setNavOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [remember, setRemember] = useState(false);
+
+  const handleSubmit = (e) => {
+    setModalOpen(!modalOpen);
+    alert(
+      "Username: " +
+        username.value +
+        " Password: " +
+        password.value +
+        " Remember: " +
+        remember.checked
+    );
+    e.preventDefault();
+  };
+
   return (
     <React.Fragment>
       <Navbar dark expand="md">
@@ -48,6 +74,13 @@ const Header = () => {
                 </NavLink>
               </NavItem>
             </Nav>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <Button outline onClick={() => setModalOpen(!modalOpen)}>
+                  <span className="fa fa-sign-in fa-lg"></span> Login
+                </Button>
+              </NavItem>
+            </Nav>
           </Collapse>
         </div>
       </Navbar>
@@ -65,6 +98,44 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)}>
+        <ModalHeader toggle={() => setModalOpen(!modalOpen)}>Login</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                type="text"
+                id="username"
+                name="username"
+                innerRef={(input) => setUsername(input)}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                innerRef={(input) => setPassword(input)}
+              />
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  name="remember"
+                  innerRef={(input) => setRemember(input)}
+                />
+                Remember me
+              </Label>
+            </FormGroup>
+            <Button type="submit" value="submit" color="primary">
+              Login
+            </Button>
+          </Form>
+        </ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };
