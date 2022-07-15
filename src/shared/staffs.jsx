@@ -210,3 +210,6 @@ export const STAFFS =
         },
 
     ]
+
+// localStorage.setItem("listStaffs", JSON.stringify(STAFFS));
+// localStorage.setItem("listDepartments", JSON.stringify(DEPARTMENTS));

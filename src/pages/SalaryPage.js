@@ -7,14 +7,18 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { STAFFS } from "../shared/staffs";
 
-const Salary = ({ staffs }) => {
-  const [sortStaffs, setSortStaffs] = useState([...staffs]);
+const Salary = () => {
+  const [sortStaffs, setSortStaffs] = useState(
+    localStorage.getItem("listStaffs")
+      ? JSON.parse(localStorage.getItem("listStaffs"))
+      : [...STAFFS]
+  );
   const [selectSort, setSelectSort] = useState("");
   const [inputSearch, setInputSearch] = useState("");
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setSelectSort(e.target.value);
     const selectedSort = e.target.value;
 
@@ -61,7 +65,7 @@ const Salary = ({ staffs }) => {
     if (inputSearch === "") {
       alert("vui lòng nhập tên nhân viên cần tìm kiếm");
     }
-    const tempt = staffs.filter((item) =>
+    const tempt = sortStaffs.filter((item) =>
       item.name.toLowerCase().includes(inputSearch.toLowerCase())
     );
     setSortStaffs(tempt);

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { STAFFS } from "../shared/staffs";
 import Home from "../pages/Homepage.js";
 import StaffDetail from "./StaffDetail";
 import DepartmentDetail from "./DepartmentDetail";
@@ -10,46 +9,24 @@ import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 
 const Main = () => {
-  const [staffs, setStaffs] = useState([...STAFFS]);
-  const [departmentName, setDepartmentName] = useState("");
-
   const StaffWithId = ({ match }) => {
     console.log(match);
-    return (
-      <StaffDetail
-        staff={
-          staffs.filter(
-            (staff) => staff.id === parseInt(match.params.staffId, 10)
-          )[0]
-        }
-      />
-    );
+    return <StaffDetail id={parseInt(match.params.staffId, 10)} />;
   };
 
   const DepartmentFilter = ({ match }) => {
-    setDepartmentName(match.params.departmentId);
     console.log(match);
-    return (
-      <DepartmentDetail
-        department={staffs.filter(
-          (staff) => staff.department.name === match.params.departmentId
-        )}
-        departmentName={departmentName}
-      />
-    );
+
+    return <DepartmentDetail departmentName={match.params.departmentId} />;
   };
 
   return (
     <div>
       <Header />
       <Switch>
-        <Route path="/home" component={() => <Home listStaffs={staffs} />} />
+        <Route path="/home" component={() => <Home />} />
         <Route exact path="/department" component={Department} />
-        <Route
-          exact
-          path="/salary"
-          component={() => <Salary staffs={staffs} />}
-        />
+        <Route exact path="/salary" component={() => <Salary />} />
         <Route path="/staff/:staffId" component={StaffWithId} />
         <Route path="/department/:departmentId" component={DepartmentFilter} />
         <Route

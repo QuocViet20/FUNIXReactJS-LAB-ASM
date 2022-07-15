@@ -37,8 +37,26 @@ function RenderDepartmentDetail({ department }) {
   );
 }
 
-const DepartmentDetail = ({ department, departmentName }) => {
-  console.log(department);
+const DepartmentDetail = ({ departmentName }) => {
+  const staffs = localStorage.getItem("listStaffs")
+    ? JSON.parse(localStorage.getItem("listStaffs"))
+    : [];
+  const filterStaffs = staffs.filter((d) => {
+    if (d.department) {
+      return d;
+    }
+  });
+  localStorage.setItem("listStaffs", JSON.stringify(filterStaffs));
+  console.log(filterStaffs);
+  console.log(departmentName);
+  console.log(
+    filterStaffs.filter((staff) => staff.department.name === departmentName)
+  );
+  const newDepartment = filterStaffs.filter(
+    (d) => d.department.name == departmentName
+  );
+  console.log(newDepartment);
+
   return (
     <div className="container">
       <div className="mx-4">
@@ -52,7 +70,7 @@ const DepartmentDetail = ({ department, departmentName }) => {
             </BreadcrumbItem>
           </Breadcrumb>
         </div>
-        <RenderDepartmentDetail department={department} />
+        <RenderDepartmentDetail department={newDepartment} />
       </div>
     </div>
   );
