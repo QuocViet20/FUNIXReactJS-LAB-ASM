@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import { Navbar, NavbarBrand } from "reactstrap";
 import Menu from "./MenuComponent";
 import DishDetail from "./DishDetailComponent";
-import { DISHES } from "../shared/dishes";
-import { COMMENTS } from "../shared/comments";
-import { PROMOTIONS } from "../shared/promotions";
-import { LEADERS } from "../shared/leaders";
+
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  };
+};
 
 const Main = () => {
-  const [dishes, setDishes] = useState([...DISHES]);
-  const [comments, setComments] = useState([...COMMENTS]);
-  const [promotions, setPromotions] = useState([...PROMOTIONS]);
-  const [leaders, setLeaders] = useState([...LEADERS]);
-  const [dishId, setDishId] = useState(null);
+  const [dishes, setDishes] = useState(dishes);
+  const [comments, setComments] = useState([...comments]);
+  const [promotions, setPromotions] = useState([...promotions]);
+  const [leaders, setLeaders] = useState([...leaders]);
 
   console.log(dishes);
 
@@ -62,4 +67,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));
