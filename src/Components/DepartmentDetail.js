@@ -7,7 +7,14 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    staffs: state.staffs,
+  };
+};
 
 function RenderStaff({ staff }) {
   return (
@@ -37,25 +44,21 @@ function RenderDepartmentDetail({ department }) {
   );
 }
 
-const DepartmentDetail = ({ departmentName }) => {
-  const staffs = localStorage.getItem("listStaffs")
-    ? JSON.parse(localStorage.getItem("listStaffs"))
-    : [];
+const DepartmentDetail = (props) => {
+  const listStaffs = props.staffs;
+  const staffs = listStaffs;
+
+  console.log(props.departmentName);
   const filterStaffs = staffs.filter((d) => {
     if (d.department) {
       return d;
     }
   });
   localStorage.setItem("listStaffs", JSON.stringify(filterStaffs));
-  console.log(filterStaffs);
-  console.log(departmentName);
-  console.log(
-    filterStaffs.filter((staff) => staff.department.name === departmentName)
-  );
+
   const newDepartment = filterStaffs.filter(
-    (d) => d.department.name == departmentName
+    (d) => d.department.name === props.departmentName
   );
-  console.log(newDepartment);
 
   return (
     <div className="container">
@@ -66,7 +69,7 @@ const DepartmentDetail = ({ departmentName }) => {
               <Link to="/department">Phòng Ban</Link>
             </BreadcrumbItem>
             <BreadcrumbItem active className="text-dark">
-              {departmentName}
+              {props.departmentName}
             </BreadcrumbItem>
           </Breadcrumb>
         </div>
@@ -75,4 +78,4 @@ const DepartmentDetail = ({ departmentName }) => {
     </div>
   );
 };
-export default DepartmentDetail;
+export default withRouter(connect(mapStateToProps)(DepartmentDetail));

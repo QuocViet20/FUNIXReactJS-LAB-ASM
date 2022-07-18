@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import { Card } from "reactstrap";
 import { DEPARTMENTS, STAFFS } from "../shared/staffs";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+const mapStateToProps = (state) => {
+  return {
+    staffs: state.staffs,
+  };
+};
 
-const Department = () => {
-  const staffs = localStorage.getItem("listStaffs")
-    ? JSON.parse(localStorage.getItem("listStaffs"))
-    : [...STAFFS];
+const Department = (props) => {
+  const staffs = props.staffs;
   const [departments, setDepartments] = useState([...DEPARTMENTS]);
-  console.log(staffs);
-  console.log(departments);
-  const newDepartments = departments.forEach((d) => {
+
+  departments.forEach((d) => {
     d.numberOfStaff = staffs.filter(
       (item) => item.department.name === d.name
     ).length;
   });
-  console.log(departments);
+
   return (
     <div className="container">
       <div className="px-4 row">
@@ -38,4 +41,4 @@ const Department = () => {
   );
 };
 
-export default Department;
+export default withRouter(connect(mapStateToProps)(Department));

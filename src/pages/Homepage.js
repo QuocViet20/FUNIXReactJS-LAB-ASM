@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DEPARTMENTS, STAFFS } from "../shared/staffs";
 import {
   Card,
@@ -9,15 +9,24 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  Form,
-  FormGroup,
-  Input,
   Label,
   Col,
-  FormFeedback,
+  Row,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Control, LocalForm, Errors } from "react-redux-form";
+import { firstAction } from "../redux/constant";
 
+const mapStateToProps = (state) => {
+  return {
+    staffs: state.staffs,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  firstDispatch: () => dispatch(firstAction);
+};
 function RenderStaff({ staff }) {
   return (
     <Card>
@@ -33,7 +42,8 @@ function RenderStaff({ staff }) {
   );
 }
 
-const Home = () => {
+const Home = (props) => {
+  console.log(props);
   const [departments, setDepartment] = useState([...DEPARTMENTS]);
 
   const initialStaff = {
@@ -60,62 +70,69 @@ const Home = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [newStaff, setNewStaff] = useState(initialStaff);
   const [inputSearch, setInputSearch] = useState("");
-  const [staffs, setStaffs] = useState(
-    localStorage.getItem("listStaffs")
-      ? JSON.parse(localStorage.getItem("listStaffs"))
-      : [...STAFFS]
-  );
+  const [staffs, setStaffs] = useState(props.staffs);
   const [errors, setErrors] = useState(initialErrors);
 
-  const handleChangeSearch = (e) => {
-    setInputSearch(e.target.value);
-  };
-  const handleBlur = () => {
-    const errors = {
-      name: "",
-      doB: "",
-      startDate: "",
-      salaryScale: "",
-      annualLeave: "",
-      overTime: "",
-    };
-    const reg = /^\d+$/;
-    const isDecimal = /^[+-]?((\d+(\.\d*)?)|(\.\d+))$/;
-    if (newStaff.name && newStaff.name.length < 3)
-      errors.name = "Name should be >= 3 characters";
-
-    if (newStaff.name && newStaff.name.length > 15)
-      errors.name = "Name should be <15 characters";
-
-    if (newStaff.salaryScale && !isDecimal.test(newStaff.salaryScale))
-      errors.salaryScale = "salaryScale should contain only numbers";
-
-    if (newStaff.annualLeave && !reg.test(newStaff.annualLeave))
-      errors.annualLeave = "annualLeave should contain only numbers";
-
-    if (newStaff.overTime && !reg.test(newStaff.overTime)) {
-      errors.overTime = "salaryScale should contain only numbers";
+  useEffect(() => {
+    const listStaffs = JSON.parse(localStorage.getItem("listStaffs"));
+    if (listStaffs && listStaffs.length > 0) {
+      setStaffs(listStaffs);
     }
+  }, []);
 
-    return setErrors(errors);
-  };
+  // const handleBlur = () => {
+  //   const errors = {
+  //     name: "",
+  //     doB: "",
+  //     startDate: "",
+  //     salaryScale: "",
+  //     annualLeave: "",
+  //     overTime: "",
+  //   };
+  //   const reg = /^\d+$/;
+  //   const isDecimal = /^[+-]?((\d+(\.\d*)?)|(\.\d+))$/;
+  //   if (newStaff.name && newStaff.name.length < 3)
+  //     errors.name = "Name should be >= 3 characters";
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "department") {
-      setNewStaff({
-        ...newStaff,
-        department: departments.find((d) => d.name === value),
-        id: staffs.length,
-      });
-    } else {
-      setNewStaff({
-        ...newStaff,
-        [name]: value,
-        id: staffs.length,
-      });
-    }
-  };
+  //   if (newStaff.name && newStaff.name.length > 15)
+  //     errors.name = "Name should be <15 characters";
+
+  //   if (newStaff.salaryScale && !isDecimal.test(newStaff.salaryScale))
+  //     errors.salaryScale = "salaryScale should contain only numbers";
+
+  //   if (newStaff.annualLeave && !reg.test(newStaff.annualLeave))
+  //     errors.annualLeave = "annualLeave should contain only numbers";
+
+  //   if (newStaff.overTime && !reg.test(newStaff.overTime)) {
+  //     errors.overTime = "salaryScale should contain only numbers";
+  //   }
+
+  //   return setErrors(errors);
+  // };
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   if (name === "department") {
+  //     setNewStaff({
+  //       ...newStaff,
+  //       department: departments.find((d) => d.name === value),
+  //       id: staffs.length,
+  //     });
+  //   } else {
+  //     setNewStaff({
+  //       ...newStaff,
+  //       [name]: value,
+  //       id: staffs.length,
+  //     });
+  //   }
+  // };
+
+  // validate form redux-form
+  const required = (val) => val && val.length;
+  const maxLength = (len) => (val) => !val || val.length <= len;
+  const minLength = (len) => (val) => val && val.length >= len;
+  const isNumber = (val) => !isNaN(Number(val));
+  const isDecimal = (val) => /^[+-]?((\d+(\.\d*)?)|(\.\d+))$/i.test(val);
 
   const handleSubmitForm = () => {
     const errors = {
@@ -170,17 +187,42 @@ const Home = () => {
     if (e.key === "Enter") handleSubmitSearch();
   };
 
+  const handleChangeSearch = (e) => {
+    setInputSearch(e.target.value);
+  };
+
   const handleSubmitSearch = () => {
     if (inputSearch === "") {
       alert("vui lòng nhập tên nhân viên");
     }
 
-    const searchStaffs = staffs.filter((item) =>
+    const searchStaffs = props.staffs.filter((item) =>
       item.name.toLowerCase().includes(inputSearch.toLowerCase())
     );
-
     setStaffs(searchStaffs);
     setInputSearch("");
+  };
+  const handleSubmit = (values) => {
+    newStaff.name = values.name;
+    newStaff.doB = values.doB;
+    newStaff.startDate = values.startDate;
+    if (!values.select) {
+      newStaff.department = departments[0];
+    } else {
+      newStaff.department = departments.find((d) => d.name === values.select);
+    }
+    newStaff.salaryScale = values.salaryScale;
+    newStaff.annualLeave = values.annualLeave;
+    newStaff.overTime = values.overTime;
+    newStaff.id = staffs.length + 1;
+    setNewStaff({ ...newStaff });
+    const newListStaffs = [...staffs];
+    newListStaffs.push(newStaff);
+    setStaffs(newListStaffs);
+    setNewStaff(initialStaff);
+
+    localStorage.setItem("listStaffs", JSON.stringify(newListStaffs));
+    setModalOpen(false);
   };
 
   const menu = staffs.map((staff) => {
@@ -191,8 +233,13 @@ const Home = () => {
     );
   });
 
+  const handleClick = () => {
+    firstDispatch();
+  };
+
   return (
     <div className="container">
+      <button onClick={handleClick}>click</button>
       <div className="mx-4">
         <div className="my-2 border-bottom mb-2 d-flex row ">
           <h2 className="mb-2">Nhân Viên</h2>
@@ -239,136 +286,198 @@ const Home = () => {
           Thêm Nhân Viên
         </ModalHeader>
         <ModalBody>
-          <Form>
-            <FormGroup row>
+          <LocalForm onSubmit={(values) => handleSubmit(values)}>
+            <Row className="form-group my-2">
               <Label htmlFor="name " sm={4}>
                 Tên
               </Label>
               <Col sm={8}>
-                <Input
-                  type="text"
+                <Control.text
+                  model=".name"
                   name="name"
-                  invalid={errors.name !== ""}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={newStaff.name}
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
                 />
-                <FormFeedback>{errors.name}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".name"
+                  show="touched"
+                  messages={{
+                    required: "Required ",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="doB " sm={4}>
                 Ngày sinh
               </Label>
               <Col sm={8}>
-                <Input
+                <Control
+                  model=".doB"
                   type="date"
                   id="doB"
                   name="doB"
-                  invalid={errors.doB !== ""}
-                  value={newStaff.doB}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  className="form-control"
+                  validators={{
+                    required,
+                  }}
                 />
-                <FormFeedback>{errors.doB}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".doB"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="startDate " sm={4}>
                 Ngày vào công ty
               </Label>
               <Col sm={8}>
-                <Input
+                <Control
+                  model=".startDate"
                   type="date"
                   id="startDate"
                   name="startDate"
-                  invalid={errors.startDate !== ""}
-                  onChange={handleChange}
-                  value={newStaff.startDate}
+                  className="form-control"
+                  validators={{
+                    required,
+                  }}
                 />
-                <FormFeedback>{errors.startDate}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".startDate"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="department " sm={4}>
                 phòng ban
               </Label>
               <Col sm={8}>
-                <Input
-                  type="select"
+                <Control.select
+                  model=".select"
                   id="department"
                   name="department"
-                  onChange={handleChange}
-                  value={newStaff.department.name}
+                  className="form-control"
                 >
                   <option value="Sale">Sale</option>
                   <option value="HR">HR</option>
                   <option value="Marketing">Marketing</option>
                   <option value="IT">IT</option>
                   <option value="Finance">Finance</option>
-                </Input>
+                </Control.select>
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="salaryScale " sm={4}>
                 hệ số lương
               </Label>
               <Col sm={8}>
-                <Input
-                  type="text"
+                <Control.text
+                  model=".salaryScale"
                   id="salaryScale"
                   name="salaryScale"
                   placeholder="1.0->3.0"
-                  invalid={errors.salaryScale !== ""}
-                  onChange={handleChange}
-                  value={newStaff.salaryScale}
-                  onBlur={handleBlur}
+                  className="form-control"
+                  validators={{
+                    required,
+                    isDecimal,
+                  }}
                 />
-                <FormFeedback>{errors.salaryScale}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".salaryScale"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                    isDecimal: "Must be a number",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="annualLeave " sm={4}>
                 Số ngày nghỉ còn lại
               </Label>
               <Col sm={8}>
-                <Input
-                  type="text"
+                <Control.text
+                  model=".annualLeave"
                   id="annualLeave"
                   name="annualLeave"
-                  invalid={errors.annualLeave !== ""}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={newStaff.annualLeave}
+                  className="form-control"
+                  validators={{
+                    required,
+                    isNumber,
+                  }}
                 />
-                <FormFeedback>{errors.annualLeave}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".annualLeave"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                    isNumber: "Must be a number",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="overTime " sm={4}>
                 Số ngày đã làm thêm
               </Label>
               <Col sm={8}>
-                <Input
-                  type="text"
+                <Control.text
+                  model=".overTime"
                   id="overTime"
                   name="overTime"
-                  invalid={errors.overTime !== ""}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={newStaff.overTime}
+                  className="form-control"
+                  validators={{
+                    required,
+                    isNumber,
+                  }}
                 />
-                <FormFeedback>{errors.overTime}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".overTime"
+                  show="touched"
+                  messages={{
+                    required: "Required ",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                    isNumber: "Must be a number",
+                  }}
+                />
               </Col>
-            </FormGroup>
+            </Row>
 
-            <Button color="primary" onClick={handleSubmitForm}>
-              Thêm
-            </Button>
-          </Form>
+            <Button color="primary">Thêm</Button>
+          </LocalForm>
         </ModalBody>
       </Modal>
     </div>
   );
 };
-export default Home;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

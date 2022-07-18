@@ -6,15 +6,18 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { STAFFS } from "../shared/staffs";
+import { connect } from "react-redux";
 
-const Salary = () => {
-  const [sortStaffs, setSortStaffs] = useState(
-    localStorage.getItem("listStaffs")
-      ? JSON.parse(localStorage.getItem("listStaffs"))
-      : [...STAFFS]
-  );
+const mapStateToProps = (state) => {
+  return {
+    staffs: state.staffs,
+  };
+};
+
+const Salary = (props) => {
+  const [sortStaffs, setSortStaffs] = useState(props.staffs);
   const [selectSort, setSelectSort] = useState("");
   const [inputSearch, setInputSearch] = useState("");
 
@@ -153,4 +156,4 @@ const Salary = () => {
     </div>
   );
 };
-export default Salary;
+export default withRouter(connect(mapStateToProps)(Salary));

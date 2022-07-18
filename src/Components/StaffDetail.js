@@ -1,7 +1,14 @@
 import React from "react";
 import { CardImg, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import dateFormat from "dateformat";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    staffs: state.staffs,
+  };
+};
 
 function RenderStaffDetail({ item }) {
   console.log(item);
@@ -22,11 +29,10 @@ function RenderStaffDetail({ item }) {
   );
 }
 
-const StaffDetail = ({ id }) => {
-  const staffs = localStorage.getItem("listStaffs")
-    ? JSON.parse(localStorage.getItem("listStaffs"))
-    : [];
-  const staff = staffs.find((d) => d.id === id);
+const StaffDetail = (props) => {
+  const staffs = props.staffs;
+  console.log(staffs);
+  const staff = staffs.find((d) => d.id === props.id);
 
   return staff ? (
     <div className="container">
@@ -51,4 +57,4 @@ const StaffDetail = ({ id }) => {
   );
 };
 
-export default StaffDetail;
+export default withRouter(connect(mapStateToProps)(StaffDetail));
