@@ -21,13 +21,6 @@ export const Reducer = (state = initialState, action) => {
         text: action.payload,
       };
     }
-    default:
-      return state; // luôn phải trả ra trị default trong switch case
-  }
-};
-
-export const StaffsReducer = (state = initialState, action) => {
-  switch (action.type) {
     case addStaffConstant: {
       return {
         ...state,
@@ -35,7 +28,8 @@ export const StaffsReducer = (state = initialState, action) => {
         staffs: action.payload,
       };
     }
+
     default:
-      return state;
+      return state; // luôn phải trả ra trị default trong switch case
   }
 };

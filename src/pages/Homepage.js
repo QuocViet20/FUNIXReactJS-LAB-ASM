@@ -14,7 +14,7 @@ import {
   Row,
 } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Control, LocalForm, Errors } from "react-redux-form";
 
 import { addStaffs } from "../redux/action";
@@ -26,10 +26,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  addStaffDispatch: () => dispatch(addStaffs.handleSubmit()),
-  // dispatch dùng để dẫn đến action
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   addStaffDispatch: () => dispatch(addStaffs.handleSubmit()),
+//   // dispatch dùng để dẫn đến action
+// });
 const mapDispatch = {
   addStaffs,
 };
@@ -87,8 +87,6 @@ const Home = (props) => {
   }, []);
 
   const dispatch = useDispatch();
-
-  dispatch(addStaffs(newStaff));
 
   // const handleBlur = () => {
   //   const errors = {
@@ -228,6 +226,9 @@ const Home = (props) => {
     setNewStaff({ ...newStaff });
     const newListStaffs = [...staffs];
     newListStaffs.push(newStaff);
+
+    dispatch(addStaffs(newListStaffs));
+
     setStaffs(newListStaffs);
     setNewStaff(initialStaff);
 
