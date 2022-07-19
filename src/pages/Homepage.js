@@ -14,18 +14,24 @@ import {
   Row,
 } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { Control, LocalForm, Errors } from "react-redux-form";
-import { firstAction } from "../redux/constant";
+
+import { addStaffs } from "../redux/action";
 
 const mapStateToProps = (state) => {
   return {
-    staffs: state.staffs,
+    staffs: state.firstReducer.staffs,
+    firstReducer: state.firstReducer,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  firstDispatch: () => dispatch(firstAction);
+const mapDispatchToProps = (dispatch) => ({
+  addStaffDispatch: () => dispatch(addStaffs.handleSubmit()),
+  // dispatch dùng để dẫn đến action
+});
+const mapDispatch = {
+  addStaffs,
 };
 function RenderStaff({ staff }) {
   return (
@@ -79,6 +85,10 @@ const Home = (props) => {
       setStaffs(listStaffs);
     }
   }, []);
+
+  const dispatch = useDispatch();
+
+  dispatch(addStaffs(newStaff));
 
   // const handleBlur = () => {
   //   const errors = {
@@ -233,13 +243,8 @@ const Home = (props) => {
     );
   });
 
-  const handleClick = () => {
-    firstDispatch();
-  };
-
   return (
     <div className="container">
-      <button onClick={handleClick}>click</button>
       <div className="mx-4">
         <div className="my-2 border-bottom mb-2 d-flex row ">
           <h2 className="mb-2">Nhân Viên</h2>
@@ -480,4 +485,4 @@ const Home = (props) => {
     </div>
   );
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
+export default withRouter(connect(mapStateToProps, mapDispatch)(Home));

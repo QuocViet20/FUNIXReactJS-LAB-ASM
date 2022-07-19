@@ -5,7 +5,8 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 const mapStateToProps = (state) => {
   return {
-    staffs: state.staffs,
+    staffs: state.firstReducer.staffs,
+    firstReducer: state.firstReducer,
   };
 };
 

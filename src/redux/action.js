@@ -1,8 +1,14 @@
-import { firstAction } from "./constant";
+import { firstActionConstant } from "./constant";
+import { addStaffConstant } from "./constant";
 
 export const firstAction = {
   getNumber: () => ({
-    type: firstAction,
+    type: firstActionConstant,
     payload: "helloWorld",
   }),
 };
+
+export const addStaffs = (staffs) => ({
+  type: addStaffConstant,
+  payload: staffs,
+});

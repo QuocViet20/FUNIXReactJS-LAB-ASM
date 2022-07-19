@@ -1,1 +1,2 @@
-export const firstAction = "FIRTS_ACTION";
+export const firstActionConstant = "FIRTS_ACTION";
+export const addStaffConstant = "ADD_STAFF";
