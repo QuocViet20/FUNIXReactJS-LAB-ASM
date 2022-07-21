@@ -3,89 +3,76 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  Form,
-  FormGroup,
   Label,
-  Input,
   Col,
   Row,
-  FormFeedback,
 } from "reactstrap";
+import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 
 function Contact(props) {
-  const initialContact = {
-    firstname: "",
-    lastname: "",
-    telnum: "",
-    email: "",
-    agree: false,
-    contactType: "Tel.",
-    message: "",
-  };
-  const initialErrors = {
-    firstname: "",
-    lastname: "",
-    telnum: "",
-    email: "",
-  };
+  // const initialContact = {
+  //   firstname: "",
+  //   lastname: "",
+  //   telnum: "",
+  //   email: "",
+  //   agree: false,
+  //   contactType: "Tel.",
+  //   message: "",
+  // };
+  // const initialErrors = {
+  //   firstname: "",
+  //   lastname: "",
+  //   telnum: "",
+  //   email: "",
+  // };
 
-  const [contact, setContact] = useState(initialContact);
-  const [errors, setErrors] = useState(initialErrors);
+  // const [contact, setContact] = useState(initialContact);
+  // const [errors, setErrors] = useState(initialErrors);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setContact({ ...contact, [name]: value });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setContact({ ...contact, [name]: value });
+  // };
 
-  const handleBlur = (e) => {
-    const errors = {
-      firstname: "",
-      lastname: "",
-      telnum: "",
-      email: "",
-    };
-
-    const reg = /^\d+$/;
-    if (contact.firstname && contact.firstname.length < 3)
-      errors.firstname = "First Name should be >= 3 characters";
-    if (contact.firstname && contact.firstname.length > 10)
-      errors.firstname = "First Name should be <= 10 characters";
-    if (contact.lastname && contact.lastname.length < 3)
-      errors.lastname = "Last Name should be >= 3 characters";
-    if (contact.lastname && contact.lastname.length > 10)
-      errors.lastname = "Last Name should be <= 10 characters";
-    if (contact.telnum && !reg.test(contact.telnum))
-      errors.telnum = "Tel. Number should contain only numbers";
-    if (
-      contact.email &&
-      contact.email.split("").filter((x) => x === "@").length !== 1
-    )
-      errors.email = "Email should contain a @";
-
-    setErrors(errors);
+  // const handleBlur = (e) => {
+  //   const errors = {
+  //     firstname: "",
+  //     lastname: "",
+  //     telnum: "",
+  //     email: "",
+  //   };
+  const handleSubmit = (values) => {
+    console.log("Current State is: " + JSON.stringify(values));
+    alert("Current State is: " + JSON.stringify(values));
   };
 
-  // const validate = () => {
   //   const reg = /^\d+$/;
   //   if (contact.firstname && contact.firstname.length < 3)
-  //     validateErrors.firstname = "First Name should be >= 3 characters";
+  //     errors.firstname = "First Name should be >= 3 characters";
   //   if (contact.firstname && contact.firstname.length > 10)
-  //     validateErrors.firstname = "First Name should be <= 10 characters";
+  //     errors.firstname = "First Name should be <= 10 characters";
   //   if (contact.lastname && contact.lastname.length < 3)
-  //     validateErrors.lastname = "Last Name should be >= 3 characters";
+  //     errors.lastname = "Last Name should be >= 3 characters";
   //   if (contact.lastname && contact.lastname.length > 10)
-  //     validateErrors.lastname = "Last Name should be <= 10 characters";
+  //     errors.lastname = "Last Name should be <= 10 characters";
   //   if (contact.telnum && !reg.test(contact.telnum))
-  //     validateErrors.telnum = "Tel. Number should contain only numbers";
+  //     errors.telnum = "Tel. Number should contain only numbers";
   //   if (
   //     contact.email &&
   //     contact.email.split("").filter((x) => x === "@").length !== 1
   //   )
-  //     validateErrors.email = "Email should contain a @";
+  //     errors.email = "Email should contain a @";
 
-  //   return setErrors(validateErrors);
+  //   setErrors(errors);
   // };
+
+  const required = (val) => val && val.length;
+  const maxLength = (len) => (val) => !val || val.length <= len;
+  const minLength = (len) => (val) => val && val.length >= len;
+  const isNumber = (val) => !isNaN(Number(val));
+  const validEmail = (val) =>
+    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
   return (
     <div className="container">
@@ -152,127 +139,170 @@ function Contact(props) {
           <h3>Send us your Feedback</h3>
         </div>
         <div className="col-12 col-md-9">
-          <Form>
-            <FormGroup row>
+          <LocalForm onSubmit={(values) => handleSubmit(values)}>
+            <Row className="form-group my-2">
               <Label htmlFor="firstname" md={2}>
                 First Name
               </Label>
               <Col md={10}>
-                <Input
-                  type="text"
+                <Control.text
+                  model=".firstname"
+                  id="firstname"
                   name="firstname"
                   placeholder="First Name"
-                  valid={errors.firstname === ""}
-                  invalid={errors.firstname !== ""}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={contact.firstname}
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
                 />
-                <FormFeedback>{errors.firstname}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".firstname"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="lastname" md={2}>
                 Last Name
               </Label>
               <Col md={10}>
-                <Input
-                  type="text"
+                <Control.text
+                  model=".lastname"
+                  id="lastname"
                   name="lastname"
                   placeholder="Last Name"
-                  valid={errors.lastname === ""}
-                  invalid={errors.lastname !== ""}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={contact.lastname}
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
                 />
-                <FormFeedback>{errors.lastname}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".lastname"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="telnum" md={2}>
                 Contact Tel.
               </Label>
               <Col md={10}>
-                <Input
-                  type="tel"
+                <Control.text
+                  model=".telnum"
+                  id="telnum"
                   name="telnum"
-                  placeholder="Tel. number"
-                  valid={errors.telnum === ""}
-                  invalid={errors.telnum !== ""}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={contact.telnum}
+                  placeholder="Tel. Number"
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                    isNumber,
+                  }}
                 />
-                <FormFeedback>{errors.telnum}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".telnum"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 numbers",
+                    maxLength: "Must be 15 numbers or less",
+                    isNumber: "Must be a number",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="email" md={2}>
                 Email
               </Label>
               <Col md={10}>
-                <Input
-                  type="email"
+                <Control.text
+                  model=".email"
+                  id="email"
                   name="email"
                   placeholder="Email"
-                  valid={errors.email === ""}
-                  invalid={errors.email !== ""}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={contact.email}
+                  className="form-control"
+                  validators={{
+                    required,
+                    validEmail,
+                  }}
                 />
-                <FormFeedback>{errors.email}</FormFeedback>
+                <Errors
+                  className="text-danger"
+                  model=".email"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    validEmail: "Invalid Email Address",
+                  }}
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Col md={{ size: 6, offset: 2 }}>
-                <FormGroup check>
+                <div className="form-check">
                   <Label check>
-                    <Input
-                      type="checkbox"
+                    <Control.checkbox
+                      model=".agree"
                       name="agree"
-                      onChange={handleChange}
-                      checked={contact.agree}
+                      className="form-check-input"
                     />{" "}
                     <strong>May we contact you?</strong>
                   </Label>
-                </FormGroup>
+                </div>
               </Col>
               <Col md={{ size: 3, offset: 1 }}>
-                <Input
-                  type="select"
+                <Control.select
+                  model=".contactType"
                   name="contactType"
-                  onChange={handleChange}
-                  value={contact.contactType}
+                  className="form-control"
                 >
                   <option>Tel.</option>
                   <option>Email</option>
-                </Input>
+                  <option> </option>
+                </Control.select>
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-2">
               <Label htmlFor="message" md={2}>
                 Your Feedback
               </Label>
               <Col md={10}>
-                <Input
-                  type="textarea"
+                <Control.textarea
+                  model=".message"
+                  id="message"
                   name="message"
                   rows="12"
-                  onChange={handleChange}
-                  value={contact.message}
-                ></Input>
+                  className="form-control"
+                />
               </Col>
-            </FormGroup>
-            <FormGroup row>
+            </Row>
+            <Row className="form-group my-1">
               <Col md={{ size: 10, offset: 2 }}>
                 <Button type="submit" color="primary">
                   Send Feedback
                 </Button>
               </Col>
-            </FormGroup>
-          </Form>
+            </Row>
+          </LocalForm>
         </div>
       </div>
     </div>

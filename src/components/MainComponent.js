@@ -18,13 +18,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-const Main = () => {
-  const [dishes, setDishes] = useState(dishes);
-  const [comments, setComments] = useState([...comments]);
-  const [promotions, setPromotions] = useState([...promotions]);
-  const [leaders, setLeaders] = useState([...leaders]);
-
-  console.log(dishes);
+const Main = (props) => {
+  console.log(props.dishes);
+  const [dishes, setDishes] = useState(props.dishes);
+  const [comments, setComments] = useState(props.comments);
+  const [promotions, setPromotions] = useState(props.promotions);
+  const [leaders, setLeaders] = useState(props.leaders);
 
   const HomePage = () => {
     return (
