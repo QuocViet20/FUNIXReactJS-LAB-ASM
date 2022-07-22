@@ -17,7 +17,7 @@ function Contact(props) {
   //   telnum: "",
   //   email: "",
   //   agree: false,
-  //   contactType: "Tel.",
+  //   contactType: "Tel.",n
   //   message: "",
   // };
   // const initialErrors = {

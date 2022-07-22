@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
 };
 
 const Main = (props) => {
+  console.log(props.leaders);
   console.log(props.dishes);
   const [dishes, setDishes] = useState(props.dishes);
   const [comments, setComments] = useState(props.comments);
