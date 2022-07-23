@@ -2,6 +2,7 @@ import { DISHES } from "../shared/dishes";
 import { LEADERS } from "../shared/leaders";
 import { COMMENTS } from "../shared/comments";
 import { PROMOTIONS } from "../shared/promotions";
+
 import {
   leadersConstant,
   commentsConstant,
@@ -10,6 +11,14 @@ import {
   ADD_DISHES,
   DISHES_FAILED,
   DISHES_LOADING,
+  ADD_COMMENTS,
+  COMMENTS_FAILED,
+  PROMOS_LOADING,
+  ADD_PROMOS,
+  PROMOS_FAILED,
+  LEADERS_LOADING,
+  ADD_LEADERS,
+  LEADERS_FAILED,
 } from "./constant";
 
 export const dishesReducer = (
@@ -35,33 +44,87 @@ export const dishesReducer = (
       return state;
   }
 };
-export const leadersReducer = (state = LEADERS, action) => {
+export const leadersReducer = (
+  state = { isLoading: true, errMess: null, leaders: [] },
+  action
+) => {
   switch (action.type) {
-    case leadersConstant: {
+    case LEADERS_LOADING: {
       return {
         ...state,
+        isLoading: true,
+        errMess: null,
+        leaders: [],
+      };
+    }
+    case ADD_LEADERS: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        leaders: action.payload,
+      };
+    }
+    case LEADERS_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        leaders: action.payload,
       };
     }
     default:
       return state;
   }
 };
-export const commentsReducer = (state = COMMENTS, action) => {
+export const commentsReducer = (
+  state = { errMess: null, comments: [] },
+  action
+) => {
   switch (action.type) {
-    case commentsConstant: {
+    case ADD_COMMENTS: {
       return {
         ...state,
+        errMess: null,
+        comments: action.payload,
+      };
+    }
+    case COMMENTS_FAILED: {
+      return {
+        ...state,
+        errMess: action.payload,
       };
     }
     default:
       return state;
   }
 };
-export const promotionsReducer = (state = PROMOTIONS, action) => {
+export const promotionsReducer = (
+  state = { isLoading: true, errMess: null, promotions: [] },
+  action
+) => {
   switch (action.type) {
-    case promotionsConstant: {
+    case ADD_PROMOS: {
       return {
         ...state,
+        isLoading: false,
+        errMess: null,
+        promotions: action.payload,
+      };
+    }
+    case PROMOS_LOADING: {
+      return {
+        ...state,
+        isLoading: true,
+        errMess: null,
+        promotions: [],
+      };
+    }
+    case PROMOS_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: action.payload,
       };
     }
     default:

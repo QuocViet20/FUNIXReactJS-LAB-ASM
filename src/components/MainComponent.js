@@ -8,7 +8,12 @@ import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchDishes } from "../redux/action";
+import {
+  fetchDishes,
+  fetchComments,
+  fetchPromotions,
+  fetchLeaders,
+} from "../redux/action";
 
 const Main = () => {
   const dishes = useSelector((state) => state.dishes);
@@ -23,18 +28,25 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(fetchDishes());
+    dispatch(fetchComments());
+    dispatch(fetchPromotions());
+    dispatch(fetchLeaders());
   }, []);
 
   console.log(dishes);
   const HomePage = () => {
-    // console.log(dishes.dishes);
+    console.log(promotions);
     return (
       <Home
         dish={dishes.dishes.filter((dish) => dish.featured)[0]}
         dishesLoading={dishes.isLoading}
         dishesErrMess={dishes.errMess}
-        promotion={promotions.filter((promo) => promo.featured)[0]}
-        leader={leaders.filter((leader) => leader.featured)[0]}
+        promotion={promotions.promotions.filter((promo) => promo.featured)[0]}
+        promoLoading={promotions.isLoading}
+        promoErrMess={promotions.errMess}
+        leader={leaders.leaders.filter((leader) => leader.featured)[0]}
+        leadersLoading={leaders.isLoading}
+        leadersErrMess={leaders.errMess}
       />
     );
   };
@@ -49,9 +61,10 @@ const Main = () => {
         }
         dishesLoading={dishes.isLoading}
         dishesErrMess={dishes.errMess}
-        comments={comments.filter(
+        comments={comments.comments.filter(
           (comment) => comment.dishId === parseInt(match.params.dishId, 10)
         )}
+        commentsErrMess={comments.errMess}
       />
     );
   };
