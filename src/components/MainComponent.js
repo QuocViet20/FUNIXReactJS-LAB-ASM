@@ -6,6 +6,7 @@ import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
+import About from "./AboutComponent";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import {
@@ -75,6 +76,11 @@ const Main = () => {
       <Switch>
         <Route path="/home" component={HomePage} />
         <Route exact path="/contactus" component={Contact} />
+        <Route
+          exact
+          path="/aboutus"
+          component={() => <About leaders={leaders.leaders} />}
+        />
         <Route
           exact
           path="/menu"

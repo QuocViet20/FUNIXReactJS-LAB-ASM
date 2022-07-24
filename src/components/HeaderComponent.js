@@ -40,8 +40,8 @@ const Header = () => {
 
   return (
     <React.Fragment>
-      <Navbar dark expand="md">
-        <div className="container ">
+      <div className=" bgdt ">
+        <Navbar dark expand="md" className="container">
           <NavbarToggler onClick={() => setNavOpen(!navOpen)} />
           <NavbarBrand className="mr-auto" href="/">
             <img
@@ -82,8 +82,8 @@ const Header = () => {
               </NavItem>
             </Nav>
           </Collapse>
-        </div>
-      </Navbar>
+        </Navbar>
+      </div>
       <div className="jumbotron">
         <div className="container">
           <div className="row row-header">
