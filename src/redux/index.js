@@ -1,5 +1,7 @@
-import { combineReducers, createStore } from "redux";
-import { Reducer } from "./reducer";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import { Reducer, staffsReducer } from "./reducer";
+import logger from "redux-logger";
+import thunk from "redux-thunk";
 
 /**
  * Gộp các reducer thành một
@@ -7,6 +9,10 @@ import { Reducer } from "./reducer";
 
 export const combineReducer = combineReducers({
   firstReducer: Reducer,
+  staffs: staffsReducer,
 });
 
-export const store = createStore(combineReducer);
+export const store = createStore(
+  combineReducer,
+  applyMiddleware(thunk, logger)
+);

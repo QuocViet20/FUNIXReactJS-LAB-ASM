@@ -1,26 +1,21 @@
 import { STAFFS } from "../shared/staffs";
 import { DEPARTMENTS } from "../shared/staffs";
-import { firstActionConstant } from "./constant";
-import { addStaffConstant } from "./constant";
+import {
+  addStaffConstant,
+  addStaff,
+  staffsLoading,
+  staffsFailed,
+} from "./constant";
 
 export const initialState = {
   staffs: localStorage.getItem("listStaffs")
     ? JSON.parse(localStorage.getItem("listStaffs"))
     : [...STAFFS],
   department: [...DEPARTMENTS],
-  tetx: "",
 };
 
 export const Reducer = (state = initialState, action) => {
   switch (action.type) {
-    case firstActionConstant: {
-      // gán state.text = 'helloworld'; 'helloWorld' là giá trọ truyền vào từ action
-      // check lại action.js để biết payload
-      return {
-        ...state,
-        text: action.payload,
-      };
-    }
     case addStaffConstant: {
       return {
         ...state,
@@ -31,5 +26,38 @@ export const Reducer = (state = initialState, action) => {
 
     default:
       return state; // luôn phải trả ra trị default trong switch case
+  }
+};
+
+export const staffsReducer = (
+  state = { isLoading: true, errMess: null, staffs: [] },
+  action
+) => {
+  switch (action.type) {
+    case addStaff: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        staffs: action.payload,
+      };
+    }
+    case staffsLoading: {
+      return {
+        ...state,
+        isLoading: true,
+        errMess: null,
+        staffs: [],
+      };
+    }
+    case staffsFailed: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: action.payload,
+      };
+    }
+    default:
+      return state;
   }
 };

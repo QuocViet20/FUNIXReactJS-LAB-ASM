@@ -13,43 +13,40 @@ import {
   Col,
   Row,
 } from "reactstrap";
+import { Loading } from "../Components/LoadingComponent";
 import { Link, withRouter } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Control, LocalForm, Errors } from "react-redux-form";
 
-import { addStaffs } from "../redux/action";
+import { addListStaffs, fetchStaffs } from "../redux/action";
 
-const mapStateToProps = (state) => {
-  return {
-    staffs: state.firstReducer.staffs,
-    firstReducer: state.firstReducer,
-  };
-};
-
-// const mapDispatchToProps = (dispatch) => ({
-//   addStaffDispatch: () => dispatch(addStaffs.handleSubmit()),
-//   // dispatch dùng để dẫn đến action
-// });
-const mapDispatch = {
-  addStaffs,
-};
-function RenderStaff({ staff }) {
-  return (
-    <Card>
-      <Link to={`staff/${staff.id}`}>
-        <CardBody>
-          <CardImg width="100%" src={staff.image} alt={staff?.name} />
-        </CardBody>
-      </Link>
-      <div>
-        <CardTitle className="text-center text-dark ">{staff?.name}</CardTitle>
-      </div>
-    </Card>
-  );
+function RenderStaff({ staff, staffsLoading, staffsErrMess }) {
+  if (staffsLoading) {
+    return <Loading />;
+  } else if (staffsErrMess) {
+    return <h4>{staffsErrMess}</h4>;
+  } else
+    return (
+      <Card>
+        <Link to={`staff/${staff.id}`}>
+          <CardBody>
+            <CardImg width="100%" src={staff.image} alt={staff?.name} />
+          </CardBody>
+        </Link>
+        <div>
+          <CardTitle className="text-center text-dark ">
+            {staff?.name}
+          </CardTitle>
+        </div>
+      </Card>
+    );
 }
 
 const Home = (props) => {
-  console.log(props);
+  console.log(listStaffs);
+  const dispatch = useDispatch();
+  const listStaffs = useSelector((state) => state.staffs);
+  console.log(listStaffs);
   const [departments, setDepartment] = useState([...DEPARTMENTS]);
 
   const initialStaff = {
@@ -76,17 +73,12 @@ const Home = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [newStaff, setNewStaff] = useState(initialStaff);
   const [inputSearch, setInputSearch] = useState("");
-  const [staffs, setStaffs] = useState(props.staffs);
+  const [staffs, setStaffs] = useState(listStaffs.staffs);
   const [errors, setErrors] = useState(initialErrors);
 
   useEffect(() => {
-    const listStaffs = JSON.parse(localStorage.getItem("listStaffs"));
-    if (listStaffs && listStaffs.length > 0) {
-      setStaffs(listStaffs);
-    }
+    fetchStaffs();
   }, []);
-
-  const dispatch = useDispatch();
 
   // const handleBlur = () => {
   //   const errors = {
@@ -227,7 +219,7 @@ const Home = (props) => {
     const newListStaffs = [...staffs];
     newListStaffs.push(newStaff);
 
-    dispatch(addStaffs(newListStaffs));
+    dispatch(addListStaffs(newListStaffs));
 
     setStaffs(newListStaffs);
     setNewStaff(initialStaff);
@@ -239,7 +231,11 @@ const Home = (props) => {
   const menu = staffs.map((staff) => {
     return (
       <div key={staff.id} className="col-6 col-lg-2 col-md-4 my-2">
-        <RenderStaff staff={staff} />
+        <RenderStaff
+          staff={staff}
+          staffsLoading={listStaffs.isLoading}
+          staffsErrMess={listStaffs.errMess}
+        />
       </div>
     );
   });
@@ -486,4 +482,4 @@ const Home = (props) => {
     </div>
   );
 };
-export default withRouter(connect(mapStateToProps, mapDispatch)(Home));
+export default Home;
