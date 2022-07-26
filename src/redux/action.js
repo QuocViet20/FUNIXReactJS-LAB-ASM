@@ -9,6 +9,7 @@ import {
 } from "./constant";
 
 import { baseUrl } from "../shared/baseUrl";
+import { response } from "express";
 export const addListStaffs = (staffs) => ({
   type: addStaffConstant,
   payload: staffs,
@@ -37,7 +38,9 @@ export const addStaffs = (staffs) => ({
 
 export const fetchDepartments = () => (dispatch) => {
   dispatch(departmentsLoading());
-  return fetch(baseUrl + "departments");
+  return fetch(baseUrl + "departments")
+    .then((response) => response.json())
+    .then((departments) => dispatch(addDepartments(departments)));
 };
 
 export const departmentsLoading = () => ({

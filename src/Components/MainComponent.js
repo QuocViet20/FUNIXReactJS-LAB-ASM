@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Home from "../pages/Homepage.js";
 import StaffDetail from "./StaffDetail";
 import DepartmentDetail from "./DepartmentDetail";
@@ -7,8 +7,15 @@ import Salary from "../pages/SalaryPage";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
+import { addListStaffs, fetchStaffs } from "../redux/action";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 const Main = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchStaffs());
+  }, []);
+
   const StaffWithId = ({ match }) => {
     console.log(match);
     return <StaffDetail id={parseInt(match.params.staffId, 10)} />;

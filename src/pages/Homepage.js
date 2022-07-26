@@ -17,33 +17,24 @@ import { Loading } from "../Components/LoadingComponent";
 import { Link, withRouter } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Control, LocalForm, Errors } from "react-redux-form";
-
 import { addListStaffs, fetchStaffs } from "../redux/action";
 
-function RenderStaff({ staff, staffsLoading, staffsErrMess }) {
-  if (staffsLoading) {
-    return <Loading />;
-  } else if (staffsErrMess) {
-    return <h4>{staffsErrMess}</h4>;
-  } else
-    return (
-      <Card>
-        <Link to={`staff/${staff.id}`}>
-          <CardBody>
-            <CardImg width="100%" src={staff.image} alt={staff?.name} />
-          </CardBody>
-        </Link>
-        <div>
-          <CardTitle className="text-center text-dark ">
-            {staff?.name}
-          </CardTitle>
-        </div>
-      </Card>
-    );
+function RenderStaff({ staff }) {
+  return (
+    <Card>
+      <Link to={`staff/${staff.id}`}>
+        <CardBody>
+          <CardImg width="100%" src={staff.image} alt={staff?.name} />
+        </CardBody>
+      </Link>
+      <div>
+        <CardTitle className="text-center text-dark ">{staff?.name}</CardTitle>
+      </div>
+    </Card>
+  );
 }
 
 const Home = (props) => {
-  console.log(listStaffs);
   const dispatch = useDispatch();
   const listStaffs = useSelector((state) => state.staffs);
   console.log(listStaffs);
@@ -76,9 +67,9 @@ const Home = (props) => {
   const [staffs, setStaffs] = useState(listStaffs.staffs);
   const [errors, setErrors] = useState(initialErrors);
 
-  useEffect(() => {
-    fetchStaffs();
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchStaffs());
+  // }, []);
 
   // const handleBlur = () => {
   //   const errors = {
@@ -228,14 +219,10 @@ const Home = (props) => {
     setModalOpen(false);
   };
 
-  const menu = staffs.map((staff) => {
+  const menu = listStaffs.staffs.map((staff) => {
     return (
       <div key={staff.id} className="col-6 col-lg-2 col-md-4 my-2">
-        <RenderStaff
-          staff={staff}
-          staffsLoading={listStaffs.isLoading}
-          staffsErrMess={listStaffs.errMess}
-        />
+        <RenderStaff staff={staff} />
       </div>
     );
   });
@@ -275,7 +262,7 @@ const Home = (props) => {
             </div>
           </div>
         </div>
-        <div className="row">{menu}</div>
+        <div className="row">{listStaffs.isLoading ? <Loading /> : menu}</div>
       </div>
       <Modal
         isOpen={modalOpen}
