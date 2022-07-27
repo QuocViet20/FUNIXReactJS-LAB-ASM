@@ -5,6 +5,9 @@ import {
   addStaff,
   staffsLoading,
   staffsFailed,
+  addDepartment,
+  departmentLoading,
+  departmentFailed,
 } from "./constant";
 
 export const initialState = {
@@ -26,6 +29,39 @@ export const Reducer = (state = initialState, action) => {
 
     default:
       return state; // luôn phải trả ra trị default trong switch case
+  }
+};
+
+export const departmentsReducer = (
+  state = { isLoading: true, errMess: null, departments: [] },
+  action
+) => {
+  switch (action.type) {
+    case addDepartment: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        departments: action.payload,
+      };
+    }
+    case departmentLoading: {
+      return {
+        ...state,
+        isLoading: true,
+        errMess: null,
+        departments: [],
+      };
+    }
+    case departmentFailed: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: action.payload,
+      };
+    }
+    default:
+      return state;
   }
 };
 

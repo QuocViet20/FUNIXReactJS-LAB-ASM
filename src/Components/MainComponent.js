@@ -7,15 +7,18 @@ import Salary from "../pages/SalaryPage";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
-import { addListStaffs, fetchStaffs } from "../redux/action";
+import { addListStaffs, fetchStaffs, fetchDepartments } from "../redux/action";
 import { connect, useDispatch, useSelector } from "react-redux";
 
 const Main = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchStaffs());
+    dispatch(fetchDepartments());
   }, []);
 
+  useSelector((state) => state.staffs);
+  useSelector((state) => state.departments);
   const StaffWithId = ({ match }) => {
     console.log(match);
     return <StaffDetail id={parseInt(match.params.staffId, 10)} />;

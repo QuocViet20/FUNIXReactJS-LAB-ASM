@@ -6,3 +6,4 @@ export const staffsFailed = "STAFFS_FAILED";
 export const addDepartment = "ADD_DEPARTMENTS";
 export const departmentLoading = "DEPARTMENTS_LOADING";
 export const departmentFailed = "DEPARTMENTS_FAILED";
+export const addNewStaff = "ADD_NEWSTAFF";

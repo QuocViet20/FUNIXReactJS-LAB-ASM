@@ -8,17 +8,11 @@ import {
 } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
 import { STAFFS } from "../shared/staffs";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-const mapStateToProps = (state) => {
-  return {
-    staffs: state.firstReducer.staffs,
-    firstReducer: state.firstReducer,
-  };
-};
-
-const Salary = (props) => {
-  const [sortStaffs, setSortStaffs] = useState(props.staffs);
+const Salary = () => {
+  const staffs = useSelector((state) => state.staffs);
+  const [sortStaffs, setSortStaffs] = useState(staffs.staffs);
   const [selectSort, setSelectSort] = useState("");
   const [inputSearch, setInputSearch] = useState("");
 
@@ -69,7 +63,7 @@ const Salary = (props) => {
     if (inputSearch === "") {
       alert("vui lòng nhập tên nhân viên cần tìm kiếm");
     }
-    const tempt = sortStaffs.filter((item) =>
+    const tempt = staffs.staffs.filter((item) =>
       item.name.toLowerCase().includes(inputSearch.toLowerCase())
     );
     setSortStaffs(tempt);
@@ -157,4 +151,4 @@ const Salary = (props) => {
     </div>
   );
 };
-export default withRouter(connect(mapStateToProps)(Salary));
+export default Salary;

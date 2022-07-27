@@ -6,18 +6,18 @@ import {
   addDepartment,
   departmentLoading,
   departmentFailed,
+  addNewStaff,
 } from "./constant";
 
 import { baseUrl } from "../shared/baseUrl";
-import { response } from "express";
 export const addListStaffs = (staffs) => ({
   type: addStaffConstant,
   payload: staffs,
 });
 
-export const fetchStaffs = () => (dispatch) => {
+export const fetchStaffs = () => async (dispatch) => {
   dispatch(staffLoading());
-  return fetch(baseUrl + "staffs")
+  return await fetch(baseUrl + "staffs")
     .then((response) => response.json())
     .then((staffs) => dispatch(addStaffs(staffs)));
 };
@@ -56,3 +56,41 @@ export const addDepartments = (departments) => ({
   type: addDepartment,
   payload: departments,
 });
+
+export const addNewStaffs = (newStaff) => ({
+  type: addNewStaff,
+  payload: newStaff,
+});
+
+export const fetchNewStaff = (newStaff) => (dispatch) => {
+  return fetch(baseUrl + "staffs", {
+    method: "POST",
+    body: JSON.stringify(newStaff),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => dispatch(addNewStaffs(response)))
+    .catch((error) => {
+      console.log("post newstaffs", error.message);
+      alert("Your comment could not be posted\nError: " + error.message);
+    });
+};

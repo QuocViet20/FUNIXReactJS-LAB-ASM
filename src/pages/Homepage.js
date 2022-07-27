@@ -37,15 +37,16 @@ function RenderStaff({ staff }) {
 const Home = (props) => {
   const dispatch = useDispatch();
   const listStaffs = useSelector((state) => state.staffs);
-  console.log(listStaffs);
-  const [departments, setDepartment] = useState([...DEPARTMENTS]);
+  console.log(props);
+  const listDepartments = useSelector((state) => state.departments);
+  const departments = listDepartments.departments;
 
   const initialStaff = {
     name: "",
     doB: "",
     salaryScale: "1",
     startDate: "",
-    department: departments[0],
+    departmentId: "Dept01",
     annualLeave: "0",
     overTime: "0",
     salary: "",
@@ -187,7 +188,7 @@ const Home = (props) => {
       alert("vui lòng nhập tên nhân viên");
     }
 
-    const searchStaffs = props.staffs.filter((item) =>
+    const searchStaffs = listStaffs.staffs.filter((item) =>
       item.name.toLowerCase().includes(inputSearch.toLowerCase())
     );
     setStaffs(searchStaffs);
@@ -198,16 +199,21 @@ const Home = (props) => {
     newStaff.doB = values.doB;
     newStaff.startDate = values.startDate;
     if (!values.select) {
-      newStaff.department = departments[0];
+      newStaff.departmentId = "Dept01";
     } else {
-      newStaff.department = departments.find((d) => d.name === values.select);
+      newStaff.departmentId = departments.find(
+        (d) => d.name === values.select
+      ).id;
     }
     newStaff.salaryScale = values.salaryScale;
     newStaff.annualLeave = values.annualLeave;
     newStaff.overTime = values.overTime;
-    newStaff.id = staffs.length + 1;
+    newStaff.id = staffs.length;
+    newStaff.salary = values.salaryScale * 300000 + values.overTime * 200000;
+    newStaff.image = "/assets/images/alberto.png";
     setNewStaff({ ...newStaff });
     const newListStaffs = [...staffs];
+
     newListStaffs.push(newStaff);
 
     dispatch(addListStaffs(newListStaffs));
@@ -219,7 +225,7 @@ const Home = (props) => {
     setModalOpen(false);
   };
 
-  const menu = listStaffs.staffs.map((staff) => {
+  const menu = staffs.map((staff) => {
     return (
       <div key={staff.id} className="col-6 col-lg-2 col-md-4 my-2">
         <RenderStaff staff={staff} />
@@ -368,11 +374,11 @@ const Home = (props) => {
                   name="department"
                   className="form-control"
                 >
-                  <option value="Sale">Sale</option>
-                  <option value="HR">HR</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="IT">IT</option>
-                  <option value="Finance">Finance</option>
+                  <option value="Dept01">Sale</option>
+                  <option value="Dept02">HR</option>
+                  <option value="Dept03">Marketing</option>
+                  <option value="Dept04">IT</option>
+                  <option value="Dept05">Finance</option>
                 </Control.select>
               </Col>
             </Row>

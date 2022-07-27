@@ -2,17 +2,14 @@ import React from "react";
 import { CardImg, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import dateFormat from "dateformat";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-
-const mapStateToProps = (state) => {
-  return {
-    staffs: state.firstReducer.staffs,
-    firstReducer: state.firstReducer,
-  };
-};
+import { useSelector } from "react-redux";
 
 function RenderStaffDetail({ item }) {
-  console.log(item);
+  const departments = useSelector((state) => state.departments);
+  console.log(departments.departments);
+  console.log(
+    departments.departments.filter((d) => d.id === item.departmentId)[0]
+  );
   return (
     <div className=" row my-2">
       <div className="col-lg-3 col-md-4 col-12 my-2">
@@ -22,7 +19,13 @@ function RenderStaffDetail({ item }) {
         <h3>Họ và tên: {item.name}</h3>
         <p>Ngày sinh: {dateFormat(item.doB, "dd/mm/yyyy")}</p>
         <p>Ngày vào công ty: {dateFormat(item.startDate, "dd/mm/yyyy")}</p>
-        <p>Phòng ban: {item.department.name}</p>
+        <p>
+          Phòng ban:{" "}
+          {
+            departments.departments.filter((d) => d.id === item.departmentId)[0]
+              .name
+          }
+        </p>
         <p>Số ngày nghỉ còn lại: {item.annualLeave}</p>
         <p>Số ngày đã làm thêm: {item.overTime}</p>
       </div>
@@ -31,9 +34,10 @@ function RenderStaffDetail({ item }) {
 }
 
 const StaffDetail = (props) => {
-  const staffs = props.staffs;
-  console.log(staffs);
-  const staff = staffs.find((d) => d.id === props.id);
+  console.log(props.id);
+  const staffs = useSelector((state) => state.staffs);
+  console.log(staffs.staffs);
+  const staff = staffs.staffs.find((d) => d.id === props.id);
 
   return staff ? (
     <div className="container">
@@ -58,4 +62,4 @@ const StaffDetail = (props) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(StaffDetail));
+export default StaffDetail;

@@ -1,5 +1,5 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import { Reducer, staffsReducer } from "./reducer";
+import { departmentsReducer, Reducer, staffsReducer } from "./reducer";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 
@@ -10,6 +10,7 @@ import thunk from "redux-thunk";
 export const combineReducer = combineReducers({
   firstReducer: Reducer,
   staffs: staffsReducer,
+  departments: departmentsReducer,
 });
 
 export const store = createStore(
