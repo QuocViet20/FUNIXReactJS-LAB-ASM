@@ -7,8 +7,9 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Loading } from "./LoadingComponent";
 
 function RenderStaff({ staff }) {
   return (
@@ -39,9 +40,10 @@ function RenderDepartmentDetail({ department }) {
 }
 
 const DepartmentDetail = (props) => {
-  const staffs = useSelector((state) => state.staffs);
   const departments = useSelector((state) => state.departments);
-  console.log(props.departmentName);
+  const departmentsDetail = useSelector((state) => state.departmentsDetail);
+  console.log(departmentsDetail);
+
   // const filterStaffs = staffs.filter((d) => {
   //   if (d.department) {
   //     return d;
@@ -49,29 +51,31 @@ const DepartmentDetail = (props) => {
   // });
   // localStorage.setItem("listStaffs", JSON.stringify(filterStaffs));
 
-  const newDepartment = staffs.staffs.filter(
-    (d) => d.departmentId === props.departmentName
-  );
-
   return (
     <div className="container">
-      <div className="mx-4">
-        <div className="row mt-2 border-bottom ">
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <Link to="/department">Phòng Ban</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem active className="text-dark">
-              {
-                departments.departments.filter(
-                  (d) => d.id === props.departmentName
-                )[0].name
-              }
-            </BreadcrumbItem>
-          </Breadcrumb>
+      {departmentsDetail.isLoading ? (
+        <Loading />
+      ) : (
+        <div className="mx-4">
+          <div className="row mt-2 border-bottom ">
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/department">Phòng Ban</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem active className="text-dark">
+                {
+                  departments.departments.filter(
+                    (d) => d.id === props.departmentName
+                  )[0].name
+                }
+              </BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+          <RenderDepartmentDetail
+            department={departmentsDetail.departmentsDetail}
+          />
         </div>
-        <RenderDepartmentDetail department={newDepartment} />
-      </div>
+      )}
     </div>
   );
 };

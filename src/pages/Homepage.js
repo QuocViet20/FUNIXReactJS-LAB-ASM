@@ -17,7 +17,7 @@ import { Loading } from "../Components/LoadingComponent";
 import { Link, withRouter } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Control, LocalForm, Errors } from "react-redux-form";
-import { addListStaffs, fetchStaffs } from "../redux/action";
+import { fetchNewStaff } from "../redux/action";
 
 function RenderStaff({ staff }) {
   return (
@@ -215,9 +215,7 @@ const Home = (props) => {
     const newListStaffs = [...staffs];
 
     newListStaffs.push(newStaff);
-
-    dispatch(addListStaffs(newListStaffs));
-
+    dispatch(fetchNewStaff(newStaff));
     setStaffs(newListStaffs);
     setNewStaff(initialStaff);
 

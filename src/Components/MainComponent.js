@@ -7,25 +7,33 @@ import Salary from "../pages/SalaryPage";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
-import { addListStaffs, fetchStaffs, fetchDepartments } from "../redux/action";
-import { connect, useDispatch, useSelector } from "react-redux";
+import {
+  addListStaffs,
+  fetchStaffs,
+  fetchDepartments,
+  fetchDepartmentsDetail,
+  fetchStaffsSalary,
+} from "../redux/action";
+import { useDispatch, useSelector } from "react-redux";
 
 const Main = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchStaffs());
     dispatch(fetchDepartments());
+    dispatch(fetchStaffsSalary());
   }, []);
 
   useSelector((state) => state.staffs);
   useSelector((state) => state.departments);
+  useSelector((state) => state.staffsSalary);
   const StaffWithId = ({ match }) => {
     console.log(match);
     return <StaffDetail id={parseInt(match.params.staffId, 10)} />;
   };
 
   const DepartmentFilter = ({ match }) => {
-    console.log(match);
+    dispatch(fetchDepartmentsDetail(match.params.departmentId));
 
     return <DepartmentDetail departmentName={match.params.departmentId} />;
   };

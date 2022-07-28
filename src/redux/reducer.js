@@ -8,6 +8,12 @@ import {
   addDepartment,
   departmentLoading,
   departmentFailed,
+  addDepartmentDetail,
+  departmentDetailLoading,
+  departmentDetailFailed,
+  addStaffsSalary,
+  staffsSalaryLoading,
+  StaffsSalaryFailed,
 } from "./constant";
 
 export const initialState = {
@@ -87,6 +93,72 @@ export const staffsReducer = (
       };
     }
     case staffsFailed: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+export const departmentsDetailReducer = (
+  state = { isLoading: true, errMess: null, departmentsDetail: [] },
+  action
+) => {
+  switch (action.type) {
+    case addDepartmentDetail: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        departmentsDetail: action.payload,
+      };
+    }
+    case departmentDetailLoading: {
+      return {
+        ...state,
+        isLoading: true,
+        errMess: null,
+        departmentsDetail: [],
+      };
+    }
+    case departmentDetailFailed: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+export const staffsSalaryReducer = (
+  state = { isLoading: true, errMess: null, staffsSalary: [] },
+  action
+) => {
+  switch (action.type) {
+    case addStaffsSalary: {
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        staffsSalary: action.payload,
+      };
+    }
+    case staffsSalaryLoading: {
+      return {
+        ...state,
+        isLoading: true,
+        errMess: null,
+        staffsSalary: [],
+      };
+    }
+    case StaffsSalaryFailed: {
       return {
         ...state,
         isLoading: false,

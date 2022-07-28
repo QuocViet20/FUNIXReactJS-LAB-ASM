@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -6,13 +6,16 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
-import { Link, withRouter } from "react-router-dom";
-import { STAFFS } from "../shared/staffs";
-import { useSelector } from "react-redux";
+import { Loading } from "../Components/LoadingComponent";
+import { fetchStaffsSalary } from "../redux/action";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 const Salary = () => {
-  const staffs = useSelector((state) => state.staffs);
-  const [sortStaffs, setSortStaffs] = useState(staffs.staffs);
+  const staffsSalary = useSelector((state) => state.staffsSalary);
+  const listStaffs = staffsSalary.staffsSalary;
+  console.log(listStaffs);
+  const [sortStaffs, setSortStaffs] = useState(listStaffs);
   const [selectSort, setSelectSort] = useState("");
   const [inputSearch, setInputSearch] = useState("");
 
@@ -44,13 +47,7 @@ const Salary = () => {
     }
     if (selectedSort === "4") {
       const tempt = sortStaffs.sort((a, b) =>
-        a.salaryScale * 300000 + a.overTime * 200000 >
-        b.salaryScale * 300000 + b.overTime * 200000
-          ? 1
-          : a.salaryScale * 300000 + a.overTime * 200000 <
-            b.salaryScale * 300000 + b.overTime * 200000
-          ? -1
-          : 1
+        a.salary > b.salary ? 1 : a.salary < b.salary ? -1 : 1
       );
       setSortStaffs(tempt);
     }
@@ -63,7 +60,7 @@ const Salary = () => {
     if (inputSearch === "") {
       alert("vui lòng nhập tên nhân viên cần tìm kiếm");
     }
-    const tempt = staffs.staffs.filter((item) =>
+    const tempt = staffsSalary.staffsSalary.filter((item) =>
       item.name.toLowerCase().includes(inputSearch.toLowerCase())
     );
     setSortStaffs(tempt);
@@ -75,79 +72,83 @@ const Salary = () => {
 
   return (
     <div className=" container">
-      <div className="row mx-4">
-        <div className=" col-12 row mt-2 border-bottom d-flex justify-content ">
-          <div className="col-12 col-sm-8 col-lg-6  mt-2">
-            <Breadcrumb>
-              <BreadcrumbItem>
-                <Link to="/home" className=" ">
-                  Nhân Viên
-                </Link>
-              </BreadcrumbItem>
-              <BreadcrumbItem active className="text-dark">
-                Bảng Lương
-              </BreadcrumbItem>
-            </Breadcrumb>
+      {staffsSalary.isLoading ? (
+        <Loading />
+      ) : (
+        <div className="row mx-4">
+          <div className=" col-12 row mt-2 border-bottom d-flex justify-content ">
+            <div className="col-12 col-sm-8 col-lg-6  mt-2">
+              <Breadcrumb>
+                <BreadcrumbItem>
+                  <Link to="/home" className=" ">
+                    Nhân Viên
+                  </Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem active className="text-dark">
+                  Bảng Lương
+                </BreadcrumbItem>
+              </Breadcrumb>
+            </div>
+            <div className="col-12 col-sm-7 col-lg-6 row d-flex align-items-center">
+              <div className=" col-sm-3 col-lg-3 align-items-right ">
+                <p className="text-danger text-right ">Sắp xếp</p>
+              </div>
+              <div className=" col-sm-9 col-lg-9 ">
+                <select
+                  class="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  onChange={handleChange}
+                  value={selectSort}
+                >
+                  <option value="1" selected>
+                    theo mã nhân viên
+                  </option>
+                  <option value="2">theo hệ số lương</option>
+                  <option value="3">theo số ngày làm thêm</option>
+                  <option value="4">theo lương</option>
+                </select>
+              </div>
+            </div>
+            <div className="row col-12 col-sm-12 col-lg-6 mt-1 d-flex">
+              <div class="col-12 col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  onChange={handleChangeSearch}
+                  placeholder="Nhập tên nhân viên"
+                  value={inputSearch}
+                  onKeyDown={handleKeyDown}
+                />
+              </div>
+              <div class="col-auto ">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  class="btn btn-primary mb-3"
+                >
+                  Tìm kiếm
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="col-12 col-sm-7 col-lg-6 row d-flex align-items-center">
-            <div className=" col-sm-3 col-lg-3 align-items-right ">
-              <p className="text-danger text-right ">Sắp xếp</p>
-            </div>
-            <div className=" col-sm-9 col-lg-9 ">
-              <select
-                class="form-select form-select-lg mb-3"
-                aria-label=".form-select-lg example"
-                onChange={handleChange}
-                value={selectSort}
-              >
-                <option value="1" selected>
-                  theo mã nhân viên
-                </option>
-                <option value="2">theo hệ số lương</option>
-                <option value="3">theo số ngày làm thêm</option>
-                <option value="4">theo lương</option>
-              </select>
-            </div>
-          </div>
-          <div className="row col-12 col-sm-12 col-lg-6 mt-1 d-flex">
-            <div class="col-12 col-sm-8">
-              <input
-                type="text"
-                class="form-control"
-                onChange={handleChangeSearch}
-                placeholder="Nhập tên nhân viên"
-                value={inputSearch}
-                onKeyDown={handleKeyDown}
-              />
-            </div>
-            <div class="col-auto ">
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                class="btn btn-primary mb-3"
-              >
-                Tìm kiếm
-              </button>
-            </div>
-          </div>
+          {sortStaffs.length > 0 &&
+            sortStaffs.map((item) => (
+              <div className="col-12 col-sm-6 col-lg-4 p-2">
+                <Card key={item.id} className="px-4 pt-2">
+                  <h3>{item.name}</h3>
+                  <p>Mã nhân viên: {item.id}</p>
+                  <p>Hệ số lương: {item.salaryScale}</p>
+                  <p>Số ngày làm thêm: {item.overTime}</p>
+                  <CardBody className="bg-light">
+                    <CardTitle className="bg-light px-4">
+                      Lương: {item.salary}
+                    </CardTitle>
+                  </CardBody>
+                </Card>
+              </div>
+            ))}
         </div>
-        {sortStaffs.length > 0 &&
-          sortStaffs.map((item) => (
-            <div className="col-12 col-sm-6 col-lg-4 p-2">
-              <Card key={item.id} className="px-4 pt-2">
-                <h3>{item.name}</h3>
-                <p>Mã nhân viên: {item.id}</p>
-                <p>Hệ số lương: {item.salaryScale}</p>
-                <p>Số ngày làm thêm: {item.overTime}</p>
-                <CardBody className="bg-light">
-                  <CardTitle className="bg-light px-4">
-                    Lương: {item.salaryScale * 300000 + item.overTime * 200000}
-                  </CardTitle>
-                </CardBody>
-              </Card>
-            </div>
-          ))}
-      </div>
+      )}
     </div>
   );
 };
