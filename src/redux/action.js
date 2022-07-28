@@ -139,7 +139,7 @@ export const fetchNewStaff = (newStaff) => (dispatch) => {
       }
     )
     .then((response) => response.json())
-    .then((response) => dispatch(addNewStaffs(response)))
+    .then((response) => dispatch(fetchStaffs()))
     .catch((error) => {
       console.log("post newstaffs", error.message);
       alert("Your comment could not be posted\nError: " + error.message);

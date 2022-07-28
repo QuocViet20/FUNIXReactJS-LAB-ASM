@@ -198,12 +198,11 @@ const Home = (props) => {
     newStaff.name = values.name;
     newStaff.doB = values.doB;
     newStaff.startDate = values.startDate;
+
     if (!values.select) {
       newStaff.departmentId = "Dept01";
     } else {
-      newStaff.departmentId = departments.find(
-        (d) => d.name === values.select
-      ).id;
+      newStaff.departmentId = values.select;
     }
     newStaff.salaryScale = values.salaryScale;
     newStaff.annualLeave = values.annualLeave;
