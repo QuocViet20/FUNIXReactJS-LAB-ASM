@@ -78,8 +78,9 @@ const StaffDetail = (props) => {
   const staffs = useSelector((state) => state.staffs);
   console.log(props.id);
   const handleDelete = () => {
-    if (alert("are you sure to delete?") === true) {
+    if (window.confirm("are you sure to delete?")) {
       dispatch(fetchDelete(props.id));
+      window.location.replace("/home");
     }
   };
 
