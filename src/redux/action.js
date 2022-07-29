@@ -145,3 +145,48 @@ export const fetchNewStaff = (newStaff) => (dispatch) => {
       alert("Your comment could not be posted\nError: " + error.message);
     });
 };
+
+export const fetchPatchNewStaff = (newStaff) => (dispatch) => {
+  return fetch(baseUrl + "staffs", {
+    method: "PATCH",
+    body: JSON.stringify(newStaff),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => dispatch(fetchStaffs()))
+    .catch((error) => {
+      console.log("post newstaffs", error.message);
+      alert("Your comment could not be posted\nError: " + error.message);
+    });
+};
+
+export const fetchDelete = (id) => (dispatch) => {
+  return fetch(baseUrl + "staffs/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then((response) => response.json())
+    .then(() => dispatch(fetchStaffs()));
+};

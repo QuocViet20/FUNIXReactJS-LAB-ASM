@@ -24,9 +24,10 @@ const Main = () => {
     dispatch(fetchStaffsSalary());
   }, []);
 
-  useSelector((state) => state.staffs);
+  const staffs = useSelector((state) => state.staffs);
   useSelector((state) => state.departments);
   useSelector((state) => state.staffsSalary);
+
   const StaffWithId = ({ match }) => {
     console.log(match);
     return <StaffDetail id={parseInt(match.params.staffId, 10)} />;
