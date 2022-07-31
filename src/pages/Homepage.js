@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { DEPARTMENTS, STAFFS } from "../shared/staffs";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -170,7 +169,7 @@ const Home = (props) => {
       setStaffs(newListStaffs);
       setNewStaff(initialStaff);
       setErrors(initialErrors);
-      localStorage.setItem("listStaffs", JSON.stringify(newListStaffs));
+      // localStorage.setItem("listStaffs", JSON.stringify(newListStaffs));
       setModalOpen(false);
     }
   };
@@ -218,7 +217,7 @@ const Home = (props) => {
     setStaffs(newListStaffs);
     setNewStaff(initialStaff);
 
-    localStorage.setItem("listStaffs", JSON.stringify(newListStaffs));
+    // localStorage.setItem("listStaffs", JSON.stringify(newListStaffs));
     setModalOpen(false);
   };
 

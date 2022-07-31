@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "reactstrap";
-import { DEPARTMENTS, STAFFS } from "../shared/staffs";
-import { Link, withRouter } from "react-router-dom";
+
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Department = () => {
