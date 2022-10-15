@@ -233,14 +233,14 @@ const Home = (props) => {
     <div className="container">
       <div className="mx-4">
         <div className="my-2 border-bottom mb-2 d-flex row ">
-          <h2 className="mb-2">Nhân Viên</h2>
+          <h2 className="mb-2">スタッフリスト</h2>
           <div className="row container-fluid ">
             <div className="col-auto col-sm-12  col-lg-2">
               <Button
                 onClick={() => setModalOpen(!modalOpen)}
                 className="btn  btn-secondary mb-3 "
               >
-                Thêm mới
+                追加
               </Button>
             </div>
             <div className="col-12 col-sm-8 col-lg-6">
@@ -248,7 +248,7 @@ const Home = (props) => {
                 type="text"
                 className="form-control"
                 onChange={handleChangeSearch}
-                placeholder="Nhập tên nhân viên"
+                placeholder="社員の氏名を入力してください。"
                 value={inputSearch}
                 onKeyDown={handleKeyDown}
               />
@@ -259,7 +259,7 @@ const Home = (props) => {
                 onClick={handleSubmitSearch}
                 className="btn btn-primary mb-3 "
               >
-                Tìm kiếm
+                検索
               </button>
             </div>
           </div>
@@ -274,13 +274,13 @@ const Home = (props) => {
         }}
       >
         <ModalHeader toggle={() => setModalOpen(!modalOpen)}>
-          Thêm Nhân Viên
+          スタッフ追加
         </ModalHeader>
         <ModalBody>
           <LocalForm onSubmit={(values) => handleSubmit(values)}>
             <Row className="form-group my-2">
               <Label htmlFor="name " sm={4}>
-                Tên
+                氏名
               </Label>
               <Col sm={8}>
                 <Control.text
@@ -307,7 +307,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="doB " sm={4}>
-                Ngày sinh
+                生年月日
               </Label>
               <Col sm={8}>
                 <Control
@@ -334,7 +334,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="startDate " sm={4}>
-                Ngày vào công ty
+                入社日
               </Label>
               <Col sm={8}>
                 <Control
@@ -361,7 +361,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="department " sm={4}>
-                phòng ban
+                デパートメント
               </Label>
               <Col sm={8}>
                 <Control.select
@@ -380,7 +380,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="salaryScale " sm={4}>
-                hệ số lương
+                給料係数
               </Label>
               <Col sm={8}>
                 <Control.text
@@ -409,7 +409,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="annualLeave " sm={4}>
-                Số ngày nghỉ còn lại
+                有給休暇
               </Label>
               <Col sm={8}>
                 <Control.text
@@ -437,7 +437,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="overTime " sm={4}>
-                Số ngày đã làm thêm
+                残業日数
               </Label>
               <Col sm={8}>
                 <Control.text
@@ -464,7 +464,7 @@ const Home = (props) => {
               </Col>
             </Row>
 
-            <Button color="primary">Thêm</Button>
+            <Button color="primary">追加</Button>
           </LocalForm>
         </ModalBody>
       </Modal>

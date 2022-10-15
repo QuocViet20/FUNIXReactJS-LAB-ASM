@@ -36,25 +36,25 @@ function RenderStaffDetail({
             <CardImg width="100%" src={item.image} alt={item.name} />
           </div>
           <div className=" col-lg-9 col-md-8 col-12 my-2">
-            <h3>Họ và tên: {item.name}</h3>
-            <p>Ngày sinh: {dateFormat(item.doB, "dd/mm/yyyy")}</p>
-            <p>Ngày vào công ty: {dateFormat(item.startDate, "dd/mm/yyyy")}</p>
+            <h3>氏名: {item.name}</h3>
+            <p>生年月日: {dateFormat(item.doB, "dd/mm/yyyy")}</p>
+            <p>入社日: {dateFormat(item.startDate, "dd/mm/yyyy")}</p>
             <p>
-              Phòng ban:
+              デパートメント:
               {
                 departments.departments.find((d) => d.id === item.departmentId)
                   .name
               }
             </p>
-            <p>Số ngày nghỉ còn lại: {item.annualLeave}</p>
-            <p>Số ngày đã làm thêm: {item.overTime}</p>
+            <p>有給休暇: {item.annualLeave}</p>
+            <p>残業日: {item.overTime}</p>
             <div className="row">
               <div className="col-auto  ">
                 <Button
                   onClick={() => setModalOpen(!modalOpen)}
                   className="btn  btn-success mb-3 "
                 >
-                  Edit
+                  編集
                 </Button>
               </div>
               <div className="col-auto  ">
@@ -62,7 +62,7 @@ function RenderStaffDetail({
                   onClick={() => handleDelete()}
                   className="btn  btn-danger mb-3 "
                 >
-                  Delete
+                  削除
                 </Button>
               </div>
             </div>
@@ -80,7 +80,6 @@ const StaffDetail = (props) => {
   const handleDelete = () => {
     if (window.confirm("are you sure to delete?")) {
       dispatch(fetchDelete(props.id));
-      window.location.replace("/home");
     }
   };
 
@@ -116,7 +115,7 @@ const StaffDetail = (props) => {
                 <div className="row mt-2 border-bottom ">
                   <Breadcrumb>
                     <BreadcrumbItem>
-                      <Link to="/home">Nhân Viên</Link>
+                      <Link to="/home">スタッフ</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active className="text-dark">
                       {staff?.name}
@@ -138,13 +137,13 @@ const StaffDetail = (props) => {
                 }}
               >
                 <ModalHeader toggle={() => setModalOpen(!modalOpen)}>
-                  Sửa Thông Tin Nhân Viên
+                  スタッフ情報編集
                 </ModalHeader>
                 <ModalBody>
                   <LocalForm onSubmit={handleSubmit}>
                     <Row className="form-group my-2">
                       <Label htmlFor="name " sm={4}>
-                        Tên
+                        氏名
                       </Label>
                       <Col sm={8}>
                         <Control.text
@@ -174,7 +173,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="doB " sm={4}>
-                        Ngày sinh
+                        生年月日
                       </Label>
                       <Col sm={8}>
                         <Control
@@ -204,7 +203,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="startDate " sm={4}>
-                        Ngày vào công ty
+                        入社日
                       </Label>
                       <Col sm={8}>
                         <Control
@@ -237,7 +236,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="department " sm={4}>
-                        phòng ban
+                        デパートメント
                       </Label>
                       <Col sm={8}>
                         <Control.select
@@ -258,7 +257,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="salaryScale " sm={4}>
-                        hệ số lương
+                        給料係数
                       </Label>
                       <Col sm={8}>
                         <Control.text
@@ -289,7 +288,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="annualLeave " sm={4}>
-                        Số ngày nghỉ còn lại
+                        有給休暇
                       </Label>
                       <Col sm={8}>
                         <Control.text
@@ -319,7 +318,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="overTime " sm={4}>
-                        Số ngày đã làm thêm
+                        残業日数
                       </Label>
                       <Col sm={8}>
                         <Control.text
@@ -348,14 +347,14 @@ const StaffDetail = (props) => {
                       </Col>
                     </Row>
 
-                    <Button color="primary">Cập Nhật</Button>
+                    <Button color="primary">更新</Button>
                   </LocalForm>
                 </ModalBody>
               </Modal>
             </div>
           ) : (
             <div className="container">
-              <h2>Nhân viên không tồn tại</h2>
+              <h2>スタッフがいません！</h2>
             </div>
           )}
         </div>

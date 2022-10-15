@@ -60,7 +60,7 @@ const DepartmentDetail = (props) => {
           <div className="row mt-2 border-bottom ">
             <Breadcrumb>
               <BreadcrumbItem>
-                <Link to="/department">Phòng Ban</Link>
+                <Link to="/department">デパートメント</Link>
               </BreadcrumbItem>
               <BreadcrumbItem active className="text-dark">
                 {

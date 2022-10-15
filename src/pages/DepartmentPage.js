@@ -29,9 +29,7 @@ const Department = () => {
               <Link to={`department/${item.id}`}>
                 <Card key={item.id} className="p-2 mt-2">
                   <h3 className="text-dark">{item.name}</h3>
-                  <p className="text-dark">
-                    Số lượng nhân viên: {item.numberOfStaff}
-                  </p>
+                  <p className="text-dark"> 従業員数: {item.numberOfStaff}</p>
                 </Card>
               </Link>
             </div>

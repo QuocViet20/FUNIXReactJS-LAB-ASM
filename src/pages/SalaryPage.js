@@ -81,17 +81,17 @@ const Salary = () => {
               <Breadcrumb>
                 <BreadcrumbItem>
                   <Link to="/home" className=" ">
-                    Nhân Viên
+                    スタッフ
                   </Link>
                 </BreadcrumbItem>
                 <BreadcrumbItem active className="text-dark">
-                  Bảng Lương
+                  給与
                 </BreadcrumbItem>
               </Breadcrumb>
             </div>
             <div className="col-12 col-sm-7 col-lg-6 row d-flex align-items-center">
               <div className=" col-sm-3 col-lg-3 align-items-right ">
-                <p className="text-danger text-right ">Sắp xếp</p>
+                <h5 className="text-danger text-right ">昇順</h5>
               </div>
               <div className=" col-sm-9 col-lg-9 ">
                 <select
@@ -101,11 +101,11 @@ const Salary = () => {
                   value={selectSort}
                 >
                   <option value="1" selected>
-                    theo mã nhân viên
+                    従業員コード
                   </option>
-                  <option value="2">theo hệ số lương</option>
-                  <option value="3">theo số ngày làm thêm</option>
-                  <option value="4">theo lương</option>
+                  <option value="2">給料係数</option>
+                  <option value="3">残業日数</option>
+                  <option value="4">給料</option>
                 </select>
               </div>
             </div>
@@ -115,7 +115,7 @@ const Salary = () => {
                   type="text"
                   class="form-control"
                   onChange={handleChangeSearch}
-                  placeholder="Nhập tên nhân viên"
+                  placeholder="社員の氏名を入力してください。"
                   value={inputSearch}
                   onKeyDown={handleKeyDown}
                 />
@@ -126,7 +126,7 @@ const Salary = () => {
                   onClick={handleSubmit}
                   class="btn btn-primary mb-3"
                 >
-                  Tìm kiếm
+                  検索
                 </button>
               </div>
             </div>
@@ -136,12 +136,12 @@ const Salary = () => {
               <div className="col-12 col-sm-6 col-lg-4 p-2">
                 <Card key={item.id} className="px-4 pt-2">
                   <h3>{item.name}</h3>
-                  <p>Mã nhân viên: {item.id}</p>
-                  <p>Hệ số lương: {item.salaryScale}</p>
-                  <p>Số ngày làm thêm: {item.overTime}</p>
+                  <p>従業員コード: {item.id}</p>
+                  <p>給料係数: {item.salaryScale}</p>
+                  <p>残業日数: {item.overTime}</p>
                   <CardBody className="bg-light">
-                    <CardTitle className="bg-light px-4">
-                      Lương: {item.salary}
+                    <CardTitle className="bg-light px-4 text-success">
+                      給料: {item.salary}
                     </CardTitle>
                   </CardBody>
                 </Card>

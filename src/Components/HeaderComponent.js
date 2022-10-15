@@ -31,17 +31,17 @@ const Header = () => {
               <Nav navbar>
                 <NavItem className=" px-1 text-light">
                   <NavLink className="nav-link" to="/home">
-                    <span className="fa fa-users"></span> Nhân Viên
+                    <span className="fa fa-users"></span> スタッフ
                   </NavLink>
                 </NavItem>
                 <NavItem className=" px-1 text-light">
                   <NavLink className="nav-link" to="/department">
-                    <span className="fa fa-address-card"></span> Phòng Ban
+                    <span className="fa fa-address-card"></span> デパートメント
                   </NavLink>
                 </NavItem>
                 <NavItem className=" px-1 text-light">
                   <NavLink className="nav-link" to="/salary">
-                    <span className="fa fa-money"></span> Bảng Lương
+                    <span className="fa fa-money"></span> 給料
                   </NavLink>
                 </NavItem>
               </Nav>

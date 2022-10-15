@@ -65,7 +65,6 @@ export const addDepartments = (departments) => ({
 });
 
 export const fetchDepartmentsDetail = (id) => (dispatch) => {
-  console.log(baseUrl + "departments/" + id);
   dispatch(departmentsDetailLoading());
   return fetch(baseUrl + "departments/" + id)
     .then((response) => response.json())
@@ -188,5 +187,13 @@ export const fetchDelete = (id) => (dispatch) => {
     credentials: "same-origin",
   })
     .then((response) => response.json())
-    .then(() => dispatch(fetchStaffs()));
+    .then(() => dispatch(fetchStaffs()))
+    .then(() => window.location.replace("/home"));
+};
+
+export const example = () => (dispatch) => {
+  dispatch(staffLoading());
+  return fetch(baseUrl + "staffs")
+    .then((response) => response.json())
+    .then((staffs) => dispatch(addStaffs(staffs)));
 };
