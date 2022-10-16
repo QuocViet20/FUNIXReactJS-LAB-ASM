@@ -233,7 +233,7 @@ const Home = (props) => {
     <div className="container">
       <div className="mx-4">
         <div className="my-2 border-bottom mb-2 d-flex row ">
-          <h2 className="mb-2">スタッフリスト</h2>
+          <h2 className="mb-2">スタッフ一覧</h2>
           <div className="row container-fluid ">
             <div className="col-auto col-sm-12  col-lg-2">
               <Button

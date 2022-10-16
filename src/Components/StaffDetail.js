@@ -236,7 +236,7 @@ const StaffDetail = (props) => {
                     </Row>
                     <Row className="form-group my-2">
                       <Label htmlFor="department " sm={4}>
-                        デパートメント
+                        部門
                       </Label>
                       <Col sm={8}>
                         <Control.select
