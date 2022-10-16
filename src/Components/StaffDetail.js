@@ -40,7 +40,7 @@ function RenderStaffDetail({
             <p>生年月日: {dateFormat(item.doB, "dd/mm/yyyy")}</p>
             <p>入社日: {dateFormat(item.startDate, "dd/mm/yyyy")}</p>
             <p>
-              デパートメント:
+              部門:
               {
                 departments.departments.find((d) => d.id === item.departmentId)
                   .name

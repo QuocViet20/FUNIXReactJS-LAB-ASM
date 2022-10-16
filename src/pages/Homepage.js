@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import { Loading } from "../Components/LoadingComponent";
 import { Link, withRouter } from "react-router-dom";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { fetchNewStaff } from "../redux/action";
 
@@ -361,7 +361,7 @@ const Home = (props) => {
             </Row>
             <Row className="form-group my-2">
               <Label htmlFor="department " sm={4}>
-                デパートメント
+                部門
               </Label>
               <Col sm={8}>
                 <Control.select

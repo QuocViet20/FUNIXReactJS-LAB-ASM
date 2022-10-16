@@ -36,7 +36,7 @@ const Header = () => {
                 </NavItem>
                 <NavItem className=" px-1 text-light">
                   <NavLink className="nav-link" to="/department">
-                    <span className="fa fa-address-card"></span> デパートメント
+                    <span className="fa fa-address-card"></span> 部門
                   </NavLink>
                 </NavItem>
                 <NavItem className=" px-1 text-light">
